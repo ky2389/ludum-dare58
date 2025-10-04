@@ -26,8 +26,8 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         // Align bullet forward with its velocity so the trail follows the motion nicely
-        if (rb && rb.velocity.sqrMagnitude > 0.0001f)
-            transform.forward = rb.velocity.normalized;
+        if (rb && rb.linearVelocity.sqrMagnitude > 0.0001f)
+            transform.forward = rb.linearVelocity.normalized;
     }
 
     void OnCollisionEnter(Collision col)

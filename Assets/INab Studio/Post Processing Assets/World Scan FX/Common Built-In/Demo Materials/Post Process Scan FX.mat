@@ -1,0 +1,208 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Post Process Scan FX
+  m_Shader: {fileID: 4800000, guid: 34f449e1093a9fb498ea2cd79f1a4af5, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _OVERLAY_GRIDANDEDGEDETECTION
+  m_InvalidKeywords:
+  - _OVERLAY_TRIPLANARTEXTURE
+  - _OVERLAY__NONE
+  - _OverlayScreenTexture
+  - _Overlay_EDGEDETECTION
+  - _Overlay_SCREENTEXTURE
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BotTexture0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Guide:
+        m_Texture: {fileID: 2800000, guid: d7166f832cca6094e8c096b432ed997b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MidTexture0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample4:
+        m_Texture: {fileID: 2800000, guid: 94349d0de2793e242bdb9eb165e214dc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar:
+        m_Texture: {fileID: 2800000, guid: 3d13dc53df2cadb448c22668aff7ff5c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Add: 3.16
+    - _Add1: 1
+    - _Addint: 0.196
+    - _Blend: 1
+    - _BumpScale: 1
+    - _CurrentScanValue: 0.554
+    - _Cutoff: 0.5
+    - _DepthHardness: 0.9
+    - _DepthMaskAmount: 0.1
+    - _DepthMaskMultiply: 0.1
+    - _DepthMaskPower: 99
+    - _DepthPower: 5
+    - _DepthThreshold: 1
+    - _DetailNormalMapScale: 1
+    - _DirectionAngle: 0
+    - _DstBlend: 0
+    - _EdgeDetectionMultiplier: 1
+    - _EdgeHardness: 1
+    - _EdgeMultiplier: 1
+    - _EdgePower: 10
+    - _EdgeSmoothness: 1
+    - _EyeSpaceDepth: 0.1
+    - _Float0: 1
+    - _Float1: 1
+    - _Fov: 45
+    - _Fov1: 55.1
+    - _FovMask: 0.199
+    - _FovMaskEnabled: 0
+    - _FovMaskSmoothness: 0.08
+    - _FovMaskSmothness: 0.06
+    - _Frequency: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _GridMultiplier: 1
+    - _GuidStrength: 0.6
+    - _GuideStrength: 0
+    - _GuideTiling: 1
+    - _HighlightMultiplier: 1
+    - _HighlightPower: 3
+    - _Intensity: 1
+    - _Mask: 0.3
+    - _MaskAmount: 0.5
+    - _MaskHardness: 0.795
+    - _MaskPower: 1
+    - _MaskRadius: 30.51
+    - _Metallic: 0
+    - _Mode: 0
+    - _MultiplyBlend: 0
+    - _NormalsHardness: 0
+    - _NormalsOffset: 0.1
+    - _NormalsPower: 1
+    - _OVERLAY_: 0
+    - _OcclusionStrength: 1
+    - _OriginOffset: 2
+    - _Overlay: 3
+    - _OverlayMultiplier: 1
+    - _OverlayPower: 0.64
+    - _Parallax: 0.02
+    - _Power: 1
+    - _Power1: 10
+    - _Ratio: 0.5
+    - _ResolutionAdjust: 0
+    - _SDFMaskAmount: 0.5
+    - _SDFMaskPower: 10
+    - _ScanPower: 2
+    - _ScanSpeed: 2
+    - _ScanTiling: 2
+    - _ScreenTextureTiling: 0
+    - _ShowMask: 0
+    - _Size: 8
+    - _Size1: 0
+    - _SizeAdjust: 0.28
+    - _Smoothness: 1
+    - _SmoothnessTextureChannel: 0
+    - _Smothness: 0.049
+    - _SpecularHighlights: 1
+    - _Speed: 0.82
+    - _SrcBlend: 1
+    - _Step: 0.949
+    - _Step1: 1
+    - _TextureTiling: 5.45
+    - _Thickness: 1
+    - _Tiling: 1
+    - _UVSec: 0
+    - _ViewDirThreshold: 4.28
+    - _ZWrite: 1
+    - _end: 2
+    - _fmodsizeadjust: 1.83
+    - _min: -8.28
+    - _multedge: 1
+    - _sizeoffset: 0.22
+    - _sizeoffset1: 0.53
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Color0: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour: {r: 0.5172217, g: 0.8962264, b: 0.29169634, a: 1}
+    - _DepthFogColour: {r: 1, g: 0, b: 0, a: 1}
+    - _Direction: {r: 1, g: 0, b: 0, a: 0}
+    - _EdgeColor: {r: 0.39215687, g: 0.8156863, b: 4, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Forward: {r: 0, g: 0, b: 1, a: 0}
+    - _GridColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HighlightColor: {r: 0.454902, g: 0.4980392, b: 1, a: 1}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Origin: {r: 0.001, g: 1.23, b: 0.001, a: 0}
+    - _OverlayColor: {r: 0, g: 0.2811131, b: 13.928809, a: 1}
+    - _ScanColour: {r: 0, g: 0.7681248, b: 1, a: 1}
+    - _ScanOrigin: {r: 2.24, g: 0, b: 0.5, a: 0}
+    - _Vector0: {r: 0, g: 0, b: 1, a: 0}
+  m_BuildTextureStacks: []
