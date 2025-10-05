@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 26e54e5a728a9234ab24fcf1460ed8a2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/Unity Companion License/StarterAssets/ThirdPersonController/Scripts/ThirdPersonController.cs
+  uploadId: 696369

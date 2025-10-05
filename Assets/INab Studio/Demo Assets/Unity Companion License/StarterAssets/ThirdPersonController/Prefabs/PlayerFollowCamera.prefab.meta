@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a1a802ecaf6775746bb2a929fb554ad8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/Unity Companion License/StarterAssets/ThirdPersonController/Prefabs/PlayerFollowCamera.prefab
+  uploadId: 696369

@@ -15,6 +15,21 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        
+        // Ensure we have a collider for collision detection
+        Collider col = GetComponent<Collider>();
+        if (col == null)
+        {
+            // Add a small sphere collider if none exists
+            SphereCollider sphereCol = gameObject.AddComponent<SphereCollider>();
+            sphereCol.radius = 0.05f;
+        }
+        
+        // Ensure proper collision detection for fast-moving bullets
+        if (rb != null)
+        {
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        }
     }
 
     void Start()
@@ -27,13 +42,35 @@ public class Bullet : MonoBehaviour
     {
         // Align bullet forward with its velocity so the trail follows the motion nicely
         if (rb && rb.linearVelocity.sqrMagnitude > 0.0001f)
+        {
             transform.forward = rb.linearVelocity.normalized;
+        }
     }
 
     void OnCollisionEnter(Collision col)
     {
-        // TODO: apply damage to hit target here
+        HandleHit(col.gameObject, col.contacts[0].point);
+    }
 
+    void OnTriggerEnter(Collider other)
+    {
+        HandleHit(other.gameObject, transform.position);
+    }
+
+    private void HandleHit(GameObject hitObject, Vector3 hitPoint)
+    {
+        // Apply damage to hit target if it has a HealthSystem
+        HealthSystem targetHealth = hitObject.GetComponent<HealthSystem>();
+        if (targetHealth != null)
+        {
+            targetHealth.TakeDamage(damage, "Player Bullet");
+        }
+
+        DestroyBullet();
+    }
+
+    private void DestroyBullet()
+    {
         // Detach the trail so it can fade out instead of being cut off instantly
         if (trail)
         {

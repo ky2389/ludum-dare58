@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cd9ed4c2d233af54ebdd6501fc2017dc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Post Processing Assets/World Scan FX/Core/Scripts/Editor/ScanFXHighlightEditor.cs
+  uploadId: 696369

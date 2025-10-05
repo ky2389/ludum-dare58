@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 42dd1a894d85db548a183bdc6a398828
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/INab Studio/Scripts/Highlighters/Camera_Controller.cs
+  uploadId: 696369
