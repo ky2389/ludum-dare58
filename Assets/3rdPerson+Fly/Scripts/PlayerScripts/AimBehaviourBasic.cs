@@ -223,7 +223,7 @@ public class AimBehaviourBasic : GenericBehaviour
 			if (rb)
 			{
 				rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // smoother trails on fast bullets
-				rb.velocity = dir * bulletSpeed; // Gravity will take over if enabled on Rigidbody
+				rb.linearVelocity = dir * bulletSpeed; // Gravity will take over if enabled on Rigidbody
 			}
 		}
 
