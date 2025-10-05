@@ -67,8 +67,8 @@ public class EnergySystem : MonoBehaviour
         currentEnergy = maxEnergy;
         lastConsumptionTime = -regenDelay; // Allow immediate regen
         
-        if (enableDebugLogs)
-            Debug.Log($"[EnergySystem] {entityName} initialized with {maxEnergy} energy");
+        //if (enableDebugLogs)
+            // Debug.Log($"[EnergySystem] {entityName} initialized with {maxEnergy} energy");
         
         OnEnergyChanged.Invoke(currentEnergy, maxEnergy);
     }
@@ -116,7 +116,7 @@ public class EnergySystem : MonoBehaviour
             Debug.LogWarning($"[EnergySystem] {entityName} partial energy consumption for {source}. Needed {amount:F1}, had {previousEnergy:F1}");
         
         if (enableDebugLogs && amount > 0.1f) // Only log significant consumption to avoid spam
-            Debug.Log($"[EnergySystem] {entityName} consumed {amount:F1} energy for {source}. Energy: {previousEnergy:F1} → {currentEnergy:F1}");
+            // Debug.Log($"[EnergySystem] {entityName} consumed {amount:F1} energy for {source}. Energy: {previousEnergy:F1} → {currentEnergy:F1}");
         
         OnEnergyChanged.Invoke(currentEnergy, maxEnergy);
         
@@ -124,8 +124,8 @@ public class EnergySystem : MonoBehaviour
         if (currentEnergy <= 0f && previousEnergy > 0f)
         {
             OnEnergyDepleted.Invoke();
-            if (enableDebugLogs)
-                Debug.LogWarning($"[EnergySystem] {entityName} energy depleted!");
+            //if (enableDebugLogs)
+                // Debug.LogWarning($"[EnergySystem] {entityName} energy depleted!");
         }
         
         return true;
@@ -144,7 +144,7 @@ public class EnergySystem : MonoBehaviour
         currentEnergy = Mathf.Min(maxEnergy, currentEnergy + amount);
         
         if (enableDebugLogs && amount > 0.1f) // Only log significant restoration
-            Debug.Log($"[EnergySystem] {entityName} restored {amount:F1} energy from {source}. Energy: {previousEnergy:F1} → {currentEnergy:F1}");
+            // Debug.Log($"[EnergySystem] {entityName} restored {amount:F1} energy from {source}. Energy: {previousEnergy:F1} → {currentEnergy:F1}");
         
         OnEnergyChanged.Invoke(currentEnergy, maxEnergy);
         
@@ -152,8 +152,8 @@ public class EnergySystem : MonoBehaviour
         if (IsFullEnergy && previousEnergy < maxEnergy)
         {
             OnEnergyFull.Invoke();
-            if (enableDebugLogs)
-                Debug.Log($"[EnergySystem] {entityName} energy is full!");
+            //if (enableDebugLogs)
+                // Debug.Log($"[EnergySystem] {entityName} energy is full!");
         }
     }
     
@@ -166,8 +166,8 @@ public class EnergySystem : MonoBehaviour
         float previousEnergy = currentEnergy;
         currentEnergy = Mathf.Clamp(newEnergy, 0f, maxEnergy);
         
-        if (enableDebugLogs)
-            Debug.Log($"[EnergySystem] {entityName} energy set to {currentEnergy:F1} (was {previousEnergy:F1})");
+        //if (enableDebugLogs)
+            // Debug.Log($"[EnergySystem] {entityName} energy set to {currentEnergy:F1} (was {previousEnergy:F1})");
         
         OnEnergyChanged.Invoke(currentEnergy, maxEnergy);
     }
@@ -199,8 +199,8 @@ public class EnergySystem : MonoBehaviour
         if (isLowEnergy && !wasLowEnergy)
         {
             OnLowEnergy.Invoke();
-            if (enableDebugLogs)
-                Debug.LogWarning($"[EnergySystem] {entityName} is at low energy! ({EnergyPercentage:P0})");
+            //if (enableDebugLogs)
+                // Debug.LogWarning($"[EnergySystem] {entityName} is at low energy! ({EnergyPercentage:P0})");
         }
         
         wasLowEnergy = isLowEnergy;
