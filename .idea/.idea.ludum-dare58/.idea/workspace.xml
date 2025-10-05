@@ -7,9 +7,30 @@
     <list default="true" id="7ad4c1a3-a316-4567-9b4c-bde96b85fba8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Avatar_PlaceCharge_Scan.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Avatar_PlaceCharge_Scan.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Canvas.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Canvas.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Charge_EMP.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Charge_EMP.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Charge_Regular.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/Charge_Regular.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/CollectorComponent_Destroyable.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/CollectorComponent_Destroyable.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/ComponentNameHint.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/EXPORT/ComponentNameHint.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/SemiTransparent_Red.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/SemiTransparent_Red.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarScan.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarScan.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Figure/figure.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Figure/figure.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Figure/gun.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Figure/gun.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +39,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -102,6 +126,8 @@
       <workItem from="1759678096499" duration="534000" />
       <workItem from="1759684652269" duration="943000" />
       <workItem from="1759686212073" duration="1306000" />
+      <workItem from="1759693417870" duration="3126000" />
+      <workItem from="1759697021584" duration="1369000" />
     </task>
     <servers />
   </component>

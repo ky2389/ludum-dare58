@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -33,16 +34,22 @@ public class CollectorDestroyableComponent : MonoBehaviour
         {
             if (!_hasBeenDisabled)
             {
-                foreach (GameObject placePointObject in _placePointsObjects)
-                {
-                    Destroy(placePointObject);
-                }
+                StartCoroutine(DestroyPlacePoints());
             
                 DestroyTextHint();
                 _hasBeenDisabled = true;
                 Debug.Log("This component has been disabled!");
                 //TODO   
             }
+        }
+    }
+
+    private IEnumerator DestroyPlacePoints()
+    {
+        yield return new WaitForSeconds(2.2f);
+        foreach (GameObject placePointObject in _placePointsObjects)
+        {
+            Destroy(placePointObject);
         }
     }
 
@@ -53,10 +60,11 @@ public class CollectorDestroyableComponent : MonoBehaviour
 
     public void SpawnTextHintForScan(GameObject textObjectPrefab, float yPos)
     {
-        Vector3 spawnPosition = new Vector3(transform.position.x, yPos , transform.position.z);
+        Vector3 spawnPosition = new Vector3(transform.position.x, yPos+2f , transform.position.z);
         
         _spawnedTextHint = Instantiate(textObjectPrefab, spawnPosition, Quaternion.identity);
         _spawnedTextHint.GetComponent<TextMeshPro>().text=componentName;
+        _spawnedTextHint.transform.SetParent(transform);
     }
 
     public void DestroyTextHint()
@@ -65,5 +73,12 @@ public class CollectorDestroyableComponent : MonoBehaviour
         {
             Destroy(_spawnedTextHint);
         }
+
+        _spawnedTextHint = null;
+    }
+
+    public bool GetHasBeenDisabled()
+    {
+        return _hasBeenDisabled;
     }
 }

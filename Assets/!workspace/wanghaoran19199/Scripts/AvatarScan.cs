@@ -82,10 +82,13 @@ public class AvatarScan : MonoBehaviour
                         hitGameobject.GetComponent<MeshRenderer>().enabled = true;
                         newScannedDestroyableComponents.Add(hitGameobject);
                         
-                        if (!_scannedDestroyableComponents.Contains(hitGameobject))
-                        {
-                            hitGameobject.GetComponent<CollectorDestroyableComponent>().SpawnTextHintForScan(textPrefab,transform.position.y);
-                        }
+                        hitGameobject.GetComponent<CollectorDestroyableComponent>().SpawnTextHintForScan(textPrefab,transform.position.y);
+                        
+                        // if (!_scannedDestroyableComponents.Contains(hitGameobject))
+                        // {
+                        //     //spawn text hint
+                        //     hitGameobject.GetComponent<CollectorDestroyableComponent>().SpawnTextHintForScan(textPrefab,transform.position.y);
+                        // }
                     }
                 }
             }
