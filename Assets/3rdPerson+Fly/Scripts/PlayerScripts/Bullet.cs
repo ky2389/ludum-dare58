@@ -6,6 +6,11 @@ public class Bullet : MonoBehaviour
     public float lifeTime = 5f;           // Auto-destroy after this time
     public float damage = 10f;
 
+    [Header("Impact VFX (optional)")]
+    public GameObject impactEffect;       // Optional impact effect prefab
+    public bool autodestroyByParticleDuration = true;
+    public float impactEffectLifetime = 2f; // Fallback seconds if no ParticleSystem
+
     [Header("Visuals")]
     public TrailRenderer trail;           // Assign your TrailRenderer component
     public Light glowLight;               // Optional small point light
@@ -30,10 +35,53 @@ public class Bullet : MonoBehaviour
             transform.forward = rb.linearVelocity.normalized;
     }
 
+    // --- Physics: solid colliders ---
     void OnCollisionEnter(Collision col)
     {
-        // TODO: apply damage to hit target here
+        ApplyDamageIfAny(col.collider, col.GetContact(0).point, col.GetContact(0).normal);
+        CleanupAndDestroy();
+    }
 
+    // --- Physics: trigger colliders (in case your target uses triggers) ---
+    void OnTriggerEnter(Collider other)
+    {
+        // Use bullet position as fallback impact point for trigger hits
+        ApplyDamageIfAny(other, transform.position, -transform.forward);
+        CleanupAndDestroy();
+    }
+
+    // Try to apply damage to a DroneHealth (or any Health-like component you add later)
+    private void ApplyDamageIfAny(Collider hitCol, Vector3 hitPoint, Vector3 hitNormal)
+    {
+        // Look up a health component on the hit object or its parents
+        var health = hitCol.GetComponentInParent<DroneHealth>();
+        if (health != null)
+        {
+            health.TakeDamage(damage);
+        }
+
+        // Optional impact effect
+        if (impactEffect)
+        {
+            var fx = Instantiate(impactEffect, hitPoint, Quaternion.LookRotation(hitNormal));
+            if (autodestroyByParticleDuration)
+            {
+                var ps = fx.GetComponent<ParticleSystem>();
+                if (ps != null)
+                    Destroy(fx, ps.main.duration + ps.main.startLifetime.constantMax);
+                else
+                    Destroy(fx, impactEffectLifetime);
+            }
+            else
+            {
+                Destroy(fx, impactEffectLifetime);
+            }
+        }
+    }
+
+    // Detach visuals and destroy bullet body
+    private void CleanupAndDestroy()
+    {
         // Detach the trail so it can fade out instead of being cut off instantly
         if (trail)
         {
@@ -55,6 +103,7 @@ public class Bullet : MonoBehaviour
             Destroy(glowLight.gameObject, 0.2f);
         }
 
-        Destroy(gameObject); // Destroy the bullet body immediately on impact
+        // Destroy the bullet body immediately on impact
+        Destroy(gameObject);
     }
 }
