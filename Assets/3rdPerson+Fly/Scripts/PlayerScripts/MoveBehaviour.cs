@@ -63,8 +63,10 @@ public class MoveBehaviour : GenericBehaviour
 			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
 			{
 				// Temporarily change player friction to pass through obstacles.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+				var collider = GetComponent<CapsuleCollider>();
+				collider.material.dynamicFriction = 0f;
+				collider.material.staticFriction = 0f;
+				// Debug.Log($"[MoveBehaviour] Jump: Friction set to 0 (was dynamic: {collider.material.dynamicFriction}, static: {collider.material.staticFriction})");
 				// Remove vertical velocity to avoid "super jumps" on slope ends.
 				RemoveVerticalVelocity();
 				// Set jump vertical impulse velocity.
@@ -86,8 +88,10 @@ public class MoveBehaviour : GenericBehaviour
 			{
 				behaviourManager.GetAnim.SetBool(groundedBool, true);
 				// Change back player friction to default.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+				var collider = GetComponent<CapsuleCollider>();
+				collider.material.dynamicFriction = 0.6f;
+				collider.material.staticFriction = 0.6f;
+				// Debug.Log($"[MoveBehaviour] Landing: Friction restored to default (dynamic: 0.6, static: 0.6)");
 				// Set jump related parameters.
 				jump = false;
 				behaviourManager.GetAnim.SetBool(jumpBool, false);
@@ -171,14 +175,19 @@ public class MoveBehaviour : GenericBehaviour
 		// Slide on vertical obstacles
 		if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
 		{
-			GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-			GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+			var collider = GetComponent<CapsuleCollider>();
+			var contactNormal = collision.GetContact(0).normal;
+			collider.material.dynamicFriction = 0f;
+			collider.material.staticFriction = 0f;
+			// Debug.Log($"[MoveBehaviour] Wall collision: Friction set to 0 for sliding. Contact normal Y: {contactNormal.y:F3}, Surface angle: {Vector3.Angle(Vector3.up, contactNormal):F1}°");
 		}
 	}
 	private void OnCollisionExit(Collision collision)
 	{
 		isColliding = false;
-		GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
-		GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+		var collider = GetComponent<CapsuleCollider>();
+		collider.material.dynamicFriction = 0.6f;
+		collider.material.staticFriction = 0.6f;
+		// Debug.Log($"[MoveBehaviour] Collision exit: Friction restored to default (dynamic: 0.6, static: 0.6). Left object: {collision.gameObject.name}");
 	}
 }

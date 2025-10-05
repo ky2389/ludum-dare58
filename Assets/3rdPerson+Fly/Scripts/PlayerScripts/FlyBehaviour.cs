@@ -8,6 +8,14 @@ public class FlyBehaviour : GenericBehaviour
 	public float sprintFactor = 2.0f;             // How much sprinting affects fly speed.
 	public float flyMaxVerticalAngle = 60f;       // Angle to clamp camera vertical movement when flying.
 
+	[Header("Vertical Flight Controls")]
+	public bool useCameraVertical = true;             // Use camera pitch for vertical movement (original behavior)
+	public bool useButtonVertical = true;             // Use buttons for vertical movement (new behavior)
+	public KeyCode ascendKey = KeyCode.LeftControl;   // Key to ascend (rise up) - Ctrl
+	public KeyCode descendKey = KeyCode.Space;        // Key to descend (go down) - Space
+	public float verticalSpeed = 3.0f;               // Vertical movement speed for buttons
+	public float cameraVerticalMultiplier = 1.0f;    // Multiplier for camera-based vertical movement
+
 	[Header("Energy Integration")]
 	public bool requiresEnergy = true;            // Whether flying requires energy
 	public bool enableDebugLogs = true;          // Enable debug logging for energy consumption
@@ -152,9 +160,18 @@ public class FlyBehaviour : GenericBehaviour
 			}
 		}
 		
-		// Add a force player's rigidbody according to the fly direction.
-		Vector3 direction = Rotating(horizontal, vertical);
-		behaviourManager.GetRigidBody.AddForce(direction * (flySpeed * 100 * (behaviourManager.IsSprinting() ? sprintFactor : 1)), ForceMode.Acceleration);
+		// Get horizontal movement direction (no Y component)
+		Vector3 horizontalDirection = RotatingHorizontal(horizontal, vertical);
+		
+		// Get vertical movement input
+		float verticalInput = GetVerticalInput();
+		
+		// Combine horizontal and vertical movement
+		Vector3 totalDirection = horizontalDirection + Vector3.up * verticalInput;
+		
+		// Apply movement force
+		float currentSpeed = flySpeed * (behaviourManager.IsSprinting() ? sprintFactor : 1);
+		behaviourManager.GetRigidBody.AddForce(totalDirection * (currentSpeed * 100), ForceMode.Acceleration);
 	}
 
 	// Rotate the player to match correct orientation, according to camera and key pressed.
@@ -196,5 +213,93 @@ public class FlyBehaviour : GenericBehaviour
 
 		// Return the current fly direction.
 		return targetDirection;
+	}
+
+	// Get vertical input for helicopter-style flying (combines camera and button input)
+	private float GetVerticalInput()
+	{
+		float verticalInput = 0f;
+		
+		// Button-based vertical input
+		if (useButtonVertical)
+		{
+			// Ascend (rise up) - Ctrl key
+			if (Input.GetKey(ascendKey))
+			{
+				verticalInput += 1f;
+			}
+			
+			// Descend (go down) - Space key
+			if (Input.GetKey(descendKey))
+			{
+				verticalInput -= 1f;
+			}
+			
+			// Apply vertical speed multiplier for buttons
+			verticalInput *= verticalSpeed;
+		}
+		
+		return verticalInput;
+	}
+
+	// Rotate the player for movement (supports both horizontal-only and full 3D movement)
+	Vector3 RotatingHorizontal(float horizontal, float vertical)
+	{
+		// Get camera forward direction
+		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+		
+		// If camera vertical movement is disabled, remove Y component
+		if (!useCameraVertical)
+		{
+			forward.y = 0f; // Remove vertical component for helicopter-style flight
+		}
+		
+		forward = forward.normalized;
+
+		Vector3 right = new Vector3(forward.z, 0, -forward.x);
+
+		// Calculate target direction based on camera forward and direction key
+		Vector3 targetDirection = forward * vertical + right * horizontal;
+		
+		// Apply camera vertical multiplier if using camera vertical
+		if (useCameraVertical)
+		{
+			targetDirection *= cameraVerticalMultiplier;
+		}
+
+		// Rotate the player to face movement direction (only if moving)
+		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
+		{
+			// For horizontal-only mode, only rotate around Y axis
+			Vector3 rotationDirection = useCameraVertical ? targetDirection : new Vector3(targetDirection.x, 0f, targetDirection.z);
+			
+			if (rotationDirection != Vector3.zero)
+			{
+				Quaternion targetRotation = Quaternion.LookRotation(rotationDirection);
+				Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
+				behaviourManager.GetRigidBody.MoveRotation(newRotation);
+				behaviourManager.SetLastDirection(rotationDirection);
+			}
+		}
+
+		// Player is flying and idle?
+		bool isIdleHorizontally = !(Mathf.Abs(horizontal) > 0.2 || Mathf.Abs(vertical) > 0.2);
+		bool isIdleVertically = !useButtonVertical || Mathf.Abs(GetVerticalInput()) < 0.1f;
+		
+		if (isIdleHorizontally && isIdleVertically)
+		{
+			// Rotate the player to stand position.
+			behaviourManager.Repositioning();
+			// Set collider direction to vertical.
+			col.direction = 1;
+		}
+		else
+		{
+			// Set collider direction to horizontal.
+			col.direction = 2;
+		}
+
+		// Return the movement direction (horizontal only if camera vertical is disabled)
+		return useCameraVertical ? targetDirection : new Vector3(targetDirection.x, 0f, targetDirection.z);
 	}
 }

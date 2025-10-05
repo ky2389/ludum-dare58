@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 853b5bbbb4a669445bf3ad34ab46319a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/INab Studio/Scripts/Highlighters/FloatingObject.cs
+  uploadId: 696369

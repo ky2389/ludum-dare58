@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f3673f63a6b49dc4c9ebcb2cf0f2d6b8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/INab Studio/Scripts/Highlighters/ObjectOscilate.cs
+  uploadId: 696369

@@ -9,6 +9,16 @@ public class CollectorController : MonoBehaviour
     public float speed = 5f; // 移动速度（单位/秒）
     public float heightOffset = 1f; // 高度偏移
     public float turnSpeed = 90f; // 转向速度（度/单位距离）
+    
+    // [Header("Moving Platform Settings")]
+    // [SerializeField] private string playerTag = "Player"; // Player tag to detect
+    // [SerializeField] private LayerMask playerLayer = -1; // Player layer mask
+    // [SerializeField] private float detectionHeight = 2f; // Height above collector to detect player
+    // [SerializeField] private bool enableDebugLogs = false; // Debug logging
+    
+    // Private variables for player tracking
+    private Transform currentPlayer; // Currently attached player
+    private Vector3 lastPosition; // Last position for velocity calculation
 
     private void Start()
     {
@@ -17,7 +27,18 @@ public class CollectorController : MonoBehaviour
             Debug.LogError("PathParent not assigned!");
             return;
         }
+        
+        // Initialize position tracking
+        lastPosition = transform.position;
+        
         StartMovement();
+    }
+    
+    void Update()
+    {
+
+        lastPosition = transform.position;
+
     }
 
     private void StartMovement()
@@ -233,4 +254,5 @@ public class CollectorController : MonoBehaviour
         }
         return points;
     }
+    
 }

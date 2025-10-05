@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7b88ba40488576b468436cda0e0c405d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Post Processing Assets/World Scan FX/Common URP/Demo
+    Materials/Scan FX Post Process.mat
+  uploadId: 696369

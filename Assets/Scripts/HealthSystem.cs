@@ -63,8 +63,8 @@ public class HealthSystem : MonoBehaviour
         lastDamageTime = -regenDelay; // Allow immediate regen if enabled
         isDead = false;
         
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} initialized with {maxHealth} HP");
+        //if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} initialized with {maxHealth} HP");
         
         OnHealthChanged.Invoke(currentHealth, maxHealth);
     }
@@ -82,8 +82,8 @@ public class HealthSystem : MonoBehaviour
         currentHealth = Mathf.Max(0f, currentHealth - damage);
         lastDamageTime = Time.time;
         
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} took {damage:F1} damage from {damageSource}. Health: {previousHealth:F1} → {currentHealth:F1}");
+        //if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} took {damage:F1} damage from {damageSource}. Health: {previousHealth:F1} → {currentHealth:F1}");
         
         OnHealthChanged.Invoke(currentHealth, maxHealth);
         
@@ -91,8 +91,8 @@ public class HealthSystem : MonoBehaviour
         if (!isDead && HealthPercentage <= 0.25f && previousHealth / maxHealth > 0.25f)
         {
             OnLowHealth.Invoke();
-            if (enableDebugLogs)
-                Debug.LogWarning($"[HealthSystem] {entityName} is at low health! ({HealthPercentage:P0})");
+            //if (enableDebugLogs)
+                // Debug.LogWarning($"[HealthSystem] {entityName} is at low health! ({HealthPercentage:P0})");
         }
         
         // Check for death
@@ -115,7 +115,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
         
         if (enableDebugLogs && healAmount > 0f)
-            Debug.Log($"[HealthSystem] {entityName} healed {healAmount:F1} HP from {healSource}. Health: {previousHealth:F1} → {currentHealth:F1}");
+            // Debug.Log($"[HealthSystem] {entityName} healed {healAmount:F1} HP from {healSource}. Health: {previousHealth:F1} → {currentHealth:F1}");
         
         OnHealthChanged.Invoke(currentHealth, maxHealth);
         
@@ -123,8 +123,8 @@ public class HealthSystem : MonoBehaviour
         if (IsFullHealth && previousHealth < maxHealth)
         {
             OnHealthFull.Invoke();
-            if (enableDebugLogs)
-                Debug.Log($"[HealthSystem] {entityName} is at full health!");
+            //if (enableDebugLogs)
+                // Debug.Log($"[HealthSystem] {entityName} is at full health!");
         }
     }
     
@@ -139,8 +139,8 @@ public class HealthSystem : MonoBehaviour
         float previousHealth = currentHealth;
         currentHealth = Mathf.Clamp(newHealth, 0f, maxHealth);
         
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} health set to {currentHealth:F1} (was {previousHealth:F1})");
+        //if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} health set to {currentHealth:F1} (was {previousHealth:F1})");
         
         OnHealthChanged.Invoke(currentHealth, maxHealth);
         
@@ -155,8 +155,8 @@ public class HealthSystem : MonoBehaviour
     /// </summary>
     public void Kill(string killSource = "Unknown")
     {
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} was killed by {killSource}");
+        ////if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} was killed by {killSource}");
         
         SetHealth(0f);
     }
@@ -169,8 +169,8 @@ public class HealthSystem : MonoBehaviour
         isDead = false;
         InitializeHealth();
         
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} has been revived!");
+        //if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} has been revived!");
     }
     
     private void HandleRegeneration()
@@ -186,8 +186,8 @@ public class HealthSystem : MonoBehaviour
     {
         isDead = true;
         
-        if (enableDebugLogs)
-            Debug.Log($"[HealthSystem] {entityName} has died!");
+        //if (enableDebugLogs)
+            // Debug.Log($"[HealthSystem] {entityName} has died!");
         
         OnDeath.Invoke();
         

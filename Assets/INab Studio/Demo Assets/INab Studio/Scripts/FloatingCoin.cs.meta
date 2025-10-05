@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c024ef0b195e73f4b94131f86f3afb93
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 263296
+  packageName: World Scan FX
+  packageVersion: 1.0
+  assetPath: Assets/INab Studio/Demo Assets/INab Studio/Scripts/FloatingCoin.cs
+  uploadId: 696369
