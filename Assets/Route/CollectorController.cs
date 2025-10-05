@@ -9,36 +9,24 @@ public class CollectorController : MonoBehaviour
     public float speed = 5f; // 移动速度（单位/秒）
     public float heightOffset = 1f; // 高度偏移
     public float turnSpeed = 90f; // 转向速度（度/单位距离）
-    
-    // [Header("Moving Platform Settings")]
-    // [SerializeField] private string playerTag = "Player"; // Player tag to detect
-    // [SerializeField] private LayerMask playerLayer = -1; // Player layer mask
-    // [SerializeField] private float detectionHeight = 2f; // Height above collector to detect player
-    // [SerializeField] private bool enableDebugLogs = false; // Debug logging
-    
-    // Private variables for player tracking
-    private Transform currentPlayer; // Currently attached player
-    private Vector3 lastPosition; // Last position for velocity calculation
+    [SerializeField] private int smoothFactor = 10; // 平滑插值密度
+    [SerializeField] private float positionLerpSpeed = 10f; // 位置平滑插值速度
+    [SerializeField] private float rotationLerpSpeed = 10f; // 旋转平滑插值速度
+
+    private Vector3 targetPosition; // 当前目标位置
+    private Quaternion targetRotation; // 当前目标旋转
+    private bool isMoving = false; // 是否正在移动
 
     private void Start()
     {
+        targetPosition = transform.position;
+        targetRotation = transform.rotation;
         if (!pathParent)
         {
             Debug.LogError("PathParent not assigned!");
             return;
         }
-        
-        // Initialize position tracking
-        lastPosition = transform.position;
-        
         StartMovement();
-    }
-    
-    void Update()
-    {
-
-        lastPosition = transform.position;
-
     }
 
     private void StartMovement()
@@ -56,19 +44,18 @@ public class CollectorController : MonoBehaviour
             return;
         }
 
-        // 构建完整的路径，包括子路径点（XZ平面）
-        List<Vector3> fullPath = new List<Vector3> { transform.position }; // 从当前位置开始
+        // 构建完整路径
+        List<Vector3> fullPath = new List<Vector3> { transform.position };
         List<Vector3> originalPoints = new List<Vector3> { transform.position };
         originalPoints.AddRange(pathPoints);
 
-        // 计算每段的弧形子路径点
         for (int i = 0; i < originalPoints.Count - 1; i++)
         {
             Vector3 p1 = originalPoints[i];
             Vector3 p2 = originalPoints[i + 1];
-            Vector3 p3 = (i + 2 < originalPoints.Count) ? originalPoints[i + 2] : originalPoints[1]; // 循环到第一个点
+            Vector3 p3 = (i + 2 < originalPoints.Count) ? originalPoints[i + 2] : originalPoints[1]; // 循环
             Vector3? center = CalculateCircleCenter(p1, p2, p3);
-            List<Vector3> subPoints = new List<Vector3>();
+            List<Vector3> subPoints;
 
             if (center.HasValue)
             {
@@ -76,7 +63,6 @@ public class CollectorController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"路径点 {i} 到 {i+1} 无法形成圆弧，使用直线插值");
                 subPoints = CalculateLinearPoints(p1, p2, 5);
             }
 
@@ -84,11 +70,11 @@ public class CollectorController : MonoBehaviour
             fullPath.Add(p2);
         }
 
-        // 添加从最后一个点到第一个点的路径（如果需要循环）
+        // 循环补尾
         if (loopPath)
         {
             Vector3 lastPoint = originalPoints[originalPoints.Count - 1];
-            Vector3 firstPoint = originalPoints[1]; // originalPoints[0] 是当前位置
+            Vector3 firstPoint = originalPoints[1];
             Vector3 secondPoint = originalPoints[2];
             Vector3? finalCenter = CalculateCircleCenter(lastPoint, firstPoint, secondPoint);
             if (finalCenter.HasValue)
@@ -102,7 +88,7 @@ public class CollectorController : MonoBehaviour
             fullPath.Add(firstPoint);
         }
 
-        // 为每个点调整Y（射线检测地形）
+        // 射线高度修正
         for (int k = 0; k < fullPath.Count; k++)
         {
             Vector3 pos = fullPath[k];
@@ -113,31 +99,31 @@ public class CollectorController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"射线未击中地形，点{k}使用默认高度");
                 fullPath[k] = new Vector3(pos.x, heightOffset, pos.z);
             }
         }
 
+        // 平滑插值路径
+        fullPath = SmoothPath(fullPath, smoothFactor);
+
         // 设置起始位置
         transform.position = fullPath[0];
+        targetPosition = fullPath[0];
 
-        // 使用DOTween序列控制移动
+        // DOTween 移动控制
         Sequence seq = DOTween.Sequence();
         Quaternion currentRot = transform.rotation;
         Vector3 currentPos = fullPath[0];
 
-        // 移动到所有点
         for (int i = 1; i < fullPath.Count; i++)
         {
             Vector3 nextPos = fullPath[i];
             Vector3 dirToNext = (nextPos - currentPos).normalized;
             if (dirToNext.magnitude == 0) continue;
 
-            // 计算移动时间
             float dist = Vector3.Distance(currentPos, nextPos);
             float moveTime = dist / speed;
 
-            // 计算目标朝向（基于下下个点）
             Quaternion targetRot;
             if (i + 1 < fullPath.Count)
             {
@@ -147,54 +133,89 @@ public class CollectorController : MonoBehaviour
             }
             else
             {
-                // 最后一个点，朝向第一个路径点（如果循环）或保持当前朝向
                 if (loopPath)
                 {
-                    Vector3 firstPathPoint = fullPath[1]; // fullPath[0] 是起始位置
+                    Vector3 firstPathPoint = fullPath[1];
                     Vector3 dirToFirst = (firstPathPoint - nextPos).normalized;
                     targetRot = Quaternion.LookRotation(dirToFirst);
                 }
                 else
                 {
-                    targetRot = currentRot; // 保持当前朝向
+                    targetRot = currentRot;
                 }
             }
 
-            // 计算转向角度
             float angle = Quaternion.Angle(currentRot, targetRot);
-
-            // 基于距离的转向速度（度/单位距离）
-            float maxAngleForDist = turnSpeed * dist; // 最大允许转向角度
+            float maxAngleForDist = turnSpeed * dist;
             float adjustedMoveTime = moveTime;
 
             if (angle > maxAngleForDist)
             {
-                // 如果转向角度超过基于距离的限制，延长移动时间
                 adjustedMoveTime = (angle / turnSpeed) / speed;
             }
 
-            // 同时移动和转向（仅在移动时转向）
-            Tween moveTween = transform.DOMove(nextPos, adjustedMoveTime).SetEase(Ease.Linear);
-            Tween rotateTween = transform.DORotateQuaternion(targetRot, adjustedMoveTime).SetEase(Ease.Linear);
+            Tween moveTween = transform.DOMove(nextPos, adjustedMoveTime).SetEase(Ease.Linear)
+                .OnUpdate(() =>
+                {
+                    targetPosition = transform.position;
+                    targetRotation = transform.rotation;
+                });
+            Tween rotateTween = transform.DORotateQuaternion(targetRot, adjustedMoveTime).SetEase(Ease.Linear)
+                .OnUpdate(() =>
+                {
+                    targetPosition = transform.position;
+                    targetRotation = transform.rotation;
+                });
             seq.Append(moveTween);
             seq.Join(rotateTween);
 
-            // 更新当前
             currentPos = nextPos;
             currentRot = targetRot;
         }
 
-        // 设置循环（仅当 loopPath 为 true 时）
         if (loopPath)
         {
-            seq.SetLoops(-1); // 无限循环
+            seq.SetLoops(-1);
         }
+        seq.OnStart(() => isMoving = true);
+        seq.OnComplete(() => isMoving = false);
         seq.Play();
     }
 
+    private void FixedUpdate()
+    {
+        if (isMoving)
+        {
+            // 物理步长平滑插值
+            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.fixedDeltaTime);
+        }
+    }
+
+    private void Update()
+    {
+        if (isMoving)
+        {
+            // 每帧平滑插值
+            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (isMoving)
+        {
+            // 渲染前平滑插值
+            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+        }
+    }
+
+    // ====== 辅助函数 ======
+
     private Vector3? CalculateCircleCenter(Vector3 p1, Vector3 p2, Vector3 p3)
     {
-        // 将 Y 置为 0，仅在 XZ 平面计算
         p1.y = 0;
         p2.y = 0;
         p3.y = 0;
@@ -203,21 +224,18 @@ public class CollectorController : MonoBehaviour
         float x2 = p2.x, z2 = p2.z;
         float x3 = p3.x, z3 = p3.z;
 
-        // 计算两条弦的中点和法线
-        float ma = (z2 - z1) / (x2 - x1 + 0.0001f); // 防止除以零
+        float ma = (z2 - z1) / (x2 - x1 + 0.0001f);
         float mb = (z3 - z2) / (x3 - x2 + 0.0001f);
-        if (Mathf.Abs(ma - mb) < 0.0001f) return null; // 三点共线
+        if (Mathf.Abs(ma - mb) < 0.0001f) return null;
 
         float centerX = (ma * mb * (z1 - z3) + mb * (x1 + x2) - ma * (x2 + x3)) / (2 * (mb - ma));
         float centerZ = (-1 / ma) * (centerX - (x1 + x2) / 2) + (z1 + z2) / 2;
-
         return new Vector3(centerX, 0, centerZ);
     }
 
     private List<Vector3> CalculateArcPoints(Vector3 start, Vector3 end, Vector3 center, int numPoints)
     {
         List<Vector3> points = new List<Vector3>();
-
         Vector3 vecS = start - center;
         vecS.y = 0;
         Vector3 vecE = end - center;
@@ -228,7 +246,6 @@ public class CollectorController : MonoBehaviour
 
         float angleS = Mathf.Atan2(vecS.z, vecS.x);
         float angleE = Mathf.Atan2(vecE.z, vecE.x);
-
         float angleDiff = Mathf.DeltaAngle(angleS * Mathf.Rad2Deg, angleE * Mathf.Rad2Deg) * Mathf.Deg2Rad;
 
         for (int j = 1; j <= numPoints; j++)
@@ -254,5 +271,41 @@ public class CollectorController : MonoBehaviour
         }
         return points;
     }
-    
+
+    private List<Vector3> SmoothPath(List<Vector3> originalPoints, int smoothFactor)
+    {
+        if (originalPoints.Count < 4) return originalPoints;
+
+        List<Vector3> smoothedPoints = new List<Vector3>();
+        for (int i = 0; i < originalPoints.Count - 1; i++)
+        {
+            Vector3 p0 = i == 0 ? originalPoints[i] : originalPoints[i - 1];
+            Vector3 p1 = originalPoints[i];
+            Vector3 p2 = originalPoints[i + 1];
+            Vector3 p3 = (i + 2 < originalPoints.Count) ? originalPoints[i + 2] : originalPoints[i + 1];
+
+            for (int j = 0; j < smoothFactor; j++)
+            {
+                float t = j / (float)smoothFactor;
+                Vector3 point = CatmullRom(p0, p1, p2, p3, t);
+                smoothedPoints.Add(point);
+            }
+        }
+
+        smoothedPoints.Add(originalPoints[originalPoints.Count - 1]);
+        return smoothedPoints;
+    }
+
+    private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    {
+        float t2 = t * t;
+        float t3 = t2 * t;
+
+        return 0.5f * (
+            (2f * p1) +
+            (-p0 + p2) * t +
+            (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
+            (-p0 + 3f * p1 - 3f * p2 + p3) * t3
+        );
+    }
 }
