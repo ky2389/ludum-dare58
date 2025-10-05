@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ad4c1a3-a316-4567-9b4c-bde96b85fba8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CameraShake0.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CameraShake0.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +100,8 @@
       <option name="presentableId" value="Default" />
       <updated>1759678095114</updated>
       <workItem from="1759678096499" duration="534000" />
-      <workItem from="1759684652269" duration="332000" />
+      <workItem from="1759684652269" duration="943000" />
+      <workItem from="1759686212073" duration="1306000" />
     </task>
     <servers />
   </component>

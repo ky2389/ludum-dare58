@@ -139,6 +139,7 @@ public class ExplosivePlacePoint : MonoBehaviour
             if ((int)chargeType<System.Enum.GetValues(typeof(ChargeTypes)).Length)
             {
                 _chargeObject = Instantiate(chargePrefab, transform.position, Quaternion.identity);  
+                _chargeObject.transform.SetParent(transform);
                 _chargeType=chargeType;
                 _chargePlaced=true;
                 return;
