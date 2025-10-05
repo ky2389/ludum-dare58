@@ -135,7 +135,15 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 			customOffsetCollision ? Vector3.zero : noCollisionOffset,
 			smooth * Time.deltaTime);
 
-		cam.position = player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+		//cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+		//add: camera shake
+		var shakeComponent = player.gameObject.GetComponent<CameraShake0>();
+		if (!shakeComponent)
+		{
+			Debug.LogError("No camera shake script attached to avatar!");
+		}
+		
+		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset + shakeComponent.GetShakeOffset();
 	}
 
 	// --- API: offsets / FOV / limits ---
