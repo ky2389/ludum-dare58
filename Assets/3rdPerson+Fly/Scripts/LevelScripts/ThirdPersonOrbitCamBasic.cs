@@ -94,7 +94,16 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, customOffsetCollision ? pivotOffset : targetPivotOffset, smooth * Time.deltaTime);
 		smoothCamOffset = Vector3.Lerp(smoothCamOffset, customOffsetCollision ? Vector3.zero : noCollisionOffset, smooth * Time.deltaTime);
 
-		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+		//cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+		//add: camera shake
+		var shakeComponent = player.gameObject.GetComponent<CameraShake0>();
+		if (!shakeComponent)
+		{
+			Debug.LogError("No camera shake script attached to avatar!");
+		}
+		
+		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset + shakeComponent.GetShakeOffset();
+
 	}
 
 	// Set camera offsets to custom values.

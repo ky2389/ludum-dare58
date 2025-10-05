@@ -7,14 +7,16 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public enum ChargeTypes
-{
-    Regular = 0,
-    EMP = 1
-}
+
 
 public class AvatarPlaceCharge : MonoBehaviour
 {
+    // enum ChargeTypes
+    // {
+    //     Regular = 0,
+    //     EMP = 1
+    // }
+    
     //charge placement
     //note: assumes placed on avatar, so transform is avatar's transform
     [Header("Input Action Names")]
@@ -128,12 +130,16 @@ public class AvatarPlaceCharge : MonoBehaviour
                     }
                     else
                     {
-                        float dist = (hit.transform.position - transform.position).sqrMagnitude;
-                        if (dist < minDist)
+                        if (hit.gameObject.GetComponent<ExplosivePlacePoint>().CheckCanBePlaced())
                         {
-                            minDist = dist;
-                            nearest = hit.transform;
+                            float dist = (hit.transform.position - transform.position).sqrMagnitude;
+                            if (dist < minDist)
+                            {
+                                minDist = dist;
+                                nearest = hit.transform;
+                            }
                         }
+                        
                     }
                 }
             }
@@ -173,27 +179,27 @@ public class AvatarPlaceCharge : MonoBehaviour
     
     private void PlaceCharge()
     {
-        if (_nearestPlacePoint)
-        {
-            if (Input.GetButtonDown(placeChargeBehavior))
-            {
-                if (_chargeNumbers[(int)_currentlyEquippedChargeType] > 0)
-                {
-                    _nearestPlacePoint.GetComponent<ExplosivePlacePoint>()
-                        .PlaceCharge(_currentlyEquippedChargeType.ToString());
-                    _placePointsWithAPlacedCharge.Add(_nearestPlacePoint);
-                    _chargeNumbers[(int)_currentlyEquippedChargeType] -= 1;
-                    
-                    TurnOffPlacePointOutline(_nearestPlacePoint);
-                }
-                else
-                {
-                    Debug.Log("Insufficient charge");
-                    //TODO: add visual hint
-                }
-                
-            }
-        }
+        // if (_nearestPlacePoint)
+        // {
+        //     if (Input.GetButtonDown(placeChargeBehavior))
+        //     {
+        //         if (_chargeNumbers[(int)_currentlyEquippedChargeType] > 0)
+        //         {
+        //             _nearestPlacePoint.GetComponent<ExplosivePlacePoint>()
+        //                 .PlaceCharge(_currentlyEquippedChargeType.ToString());
+        //             _placePointsWithAPlacedCharge.Add(_nearestPlacePoint);
+        //             _chargeNumbers[(int)_currentlyEquippedChargeType] -= 1;
+        //             
+        //             TurnOffPlacePointOutline(_nearestPlacePoint);
+        //         }
+        //         else
+        //         {
+        //             Debug.Log("Insufficient charge");
+        //             //TODO: add visual hint
+        //         }
+        //         
+        //     }
+        // }
     }
 
     private void DetonateAllCharges()
