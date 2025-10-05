@@ -12,7 +12,7 @@ public class CameraShake0 : MonoBehaviour
     private float _shakeTimer = 100f;
 	
     // Amplitude of the shake. A larger value shakes the camera harder.
-    public float originalShakeAmount = 3f;
+    public float originalShakeAmount = 0.45f;
     private float _shakeAmount;
     public float decreaseFactor = 1.0f;
 	
