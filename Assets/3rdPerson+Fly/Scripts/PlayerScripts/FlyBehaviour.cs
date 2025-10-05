@@ -8,9 +8,14 @@ public class FlyBehaviour : GenericBehaviour
 	public float sprintFactor = 2.0f;             // How much sprinting affects fly speed.
 	public float flyMaxVerticalAngle = 60f;       // Angle to clamp camera vertical movement when flying.
 
+	[Header("Energy Integration")]
+	public bool requiresEnergy = true;            // Whether flying requires energy
+	public bool enableDebugLogs = true;          // Enable debug logging for energy consumption
+
 	private int flyBool;                          // Animator variable related to flying.
 	private bool fly = false;                     // Boolean to determine whether or not the player activated fly mode.
 	private CapsuleCollider col;                  // Reference to the player capsule collider.
+	private EnergySystem energySystem;           // Reference to the energy system component.
 
 	// Start is always called after any Awake functions.
 	void Start()
@@ -18,6 +23,22 @@ public class FlyBehaviour : GenericBehaviour
 		// Set up the references.
 		flyBool = Animator.StringToHash("Fly");
 		col = this.GetComponent<CapsuleCollider>();
+		
+		// Get energy system component if energy is required
+		if (requiresEnergy)
+		{
+			energySystem = GetComponent<EnergySystem>();
+			if (energySystem == null)
+			{
+				Debug.LogWarning($"[FlyBehaviour] EnergySystem component not found on {gameObject.name}. Flying will work without energy consumption.");
+				requiresEnergy = false;
+			}
+			else if (enableDebugLogs)
+			{
+				Debug.Log($"[FlyBehaviour] Energy system integrated successfully.");
+			}
+		}
+		
 		// Subscribe this behaviour on the manager.
 		behaviourManager.SubscribeBehaviour(this);
 	}
@@ -29,6 +50,14 @@ public class FlyBehaviour : GenericBehaviour
 		if (Input.GetButtonDown(flyButton) && !behaviourManager.IsOverriding() 
 			&& !behaviourManager.GetTempLockStatus(behaviourManager.GetDefaultBehaviour))
 		{
+			// Check if we have enough energy to start flying
+			if (!fly && requiresEnergy && energySystem != null && !energySystem.CanFly)
+			{
+				if (enableDebugLogs)
+					Debug.LogWarning($"[FlyBehaviour] Cannot start flying - insufficient energy! ({energySystem.CurrentEnergy:F1}/{energySystem.MaxEnergy:F1})");
+				return;
+			}
+			
 			fly = !fly;
 
 			// Force end jump transition.
@@ -40,11 +69,17 @@ public class FlyBehaviour : GenericBehaviour
 			// Player is flying.
 			if (fly)
 			{
+				if (enableDebugLogs)
+					Debug.Log($"[FlyBehaviour] Started flying. Energy: {(energySystem != null ? energySystem.CurrentEnergy.ToString("F1") : "N/A")}");
+				
 				// Register this behaviour.
 				behaviourManager.RegisterBehaviour(this.behaviourCode);
 			}
 			else
 			{
+				if (enableDebugLogs)
+					Debug.Log($"[FlyBehaviour] Stopped flying. Energy: {(energySystem != null ? energySystem.CurrentEnergy.ToString("F1") : "N/A")}");
+				
 				// Set collider direction to vertical.
 				col.direction = 1;
 				// Set camera default offset.
@@ -53,6 +88,19 @@ public class FlyBehaviour : GenericBehaviour
 				// Unregister this behaviour and set current behaviour to the default one.
 				behaviourManager.UnregisterBehaviour(this.behaviourCode);
 			}
+		}
+		
+		// Force stop flying if energy is depleted
+		if (fly && requiresEnergy && energySystem != null && energySystem.IsEnergyDepleted)
+		{
+			if (enableDebugLogs)
+				Debug.LogWarning($"[FlyBehaviour] Energy depleted! Forced landing.");
+			
+			fly = false;
+			col.direction = 1;
+			behaviourManager.GetCamScript.ResetTargetOffsets();
+			behaviourManager.GetRigidBody.useGravity = true;
+			behaviourManager.UnregisterBehaviour(this.behaviourCode);
 		}
 
 		// Assert this is the active behaviour
@@ -81,6 +129,29 @@ public class FlyBehaviour : GenericBehaviour
 	// Deal with the player movement when flying.
 	void FlyManagement(float horizontal, float vertical)
 	{
+		// Consume energy while flying
+		if (requiresEnergy && energySystem != null)
+		{
+			bool isSprinting = behaviourManager.IsSprinting();
+			bool energyConsumed;
+			
+			if (isSprinting)
+			{
+				energyConsumed = energySystem.ConsumeSprintFlyEnergy();
+			}
+			else
+			{
+				energyConsumed = energySystem.ConsumeFlyEnergy();
+			}
+			
+			// If energy consumption failed, we can't fly effectively
+			if (!energyConsumed)
+			{
+				// Reduce effectiveness when low on energy
+				return;
+			}
+		}
+		
 		// Add a force player's rigidbody according to the fly direction.
 		Vector3 direction = Rotating(horizontal, vertical);
 		behaviourManager.GetRigidBody.AddForce(direction * (flySpeed * 100 * (behaviourManager.IsSprinting() ? sprintFactor : 1)), ForceMode.Acceleration);
