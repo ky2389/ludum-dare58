@@ -225,6 +225,13 @@ public class AimBehaviourBasic : GenericBehaviour
 				rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // smoother trails on fast bullets
 				rb.linearVelocity = dir * bulletSpeed; // Gravity will take over if enabled on Rigidbody
 			}
+			
+			// Check if bullet is spawned inside a shield and mark it as outgoing
+			ShieldAwareBulletSpawner shieldAware = GetComponent<ShieldAwareBulletSpawner>();
+			if (shieldAware != null)
+			{
+				shieldAware.OnBulletSpawned(bullet, muzzle.position);
+			}
 		}
 
 		// --- Muzzle VFX (purely visual) ---

@@ -45,7 +45,45 @@ public class Bullet : MonoBehaviour
     // --- Physics: trigger colliders (in case your target uses triggers) ---
     void OnTriggerEnter(Collider other)
     {
+        // Check for shield barrier first
+        ShieldBarrier shieldBarrier = other.GetComponent<ShieldBarrier>();
+        if (shieldBarrier != null)
+        {
+            // Let the shield barrier decide if this bullet should be blocked
+            if (shieldBarrier.ShouldBlockBullet(gameObject))
+            {
+                // Bullet is blocked by shield - destroy it
+                // Debug.Log("[Bullet] Blocked by shield barrier - destroying");
+                CleanupAndDestroy();
+                return;
+            }
+            else
+            {
+                // Bullet passes through shield barrier - continue to check for other targets
+                // Debug.Log("[Bullet] Passing through shield barrier - continuing");
+                // Don't return here - let the bullet continue to hit other targets
+            }
+        }
+        
+        // Check for shield damage zone (we don't want bullets to be destroyed by damage zones)
+        ShieldDamageZone damageZone = other.GetComponent<ShieldDamageZone>();
+        if (damageZone != null)
+        {
+            // Ignore damage zones - bullets should pass through them
+            // Debug.Log("[Bullet] Passing through shield damage zone - ignoring");
+            return;
+        }
+        
+        // If we got here and it's a shield barrier that we passed through, don't apply damage to the barrier itself
+        if (shieldBarrier != null)
+        {
+            // We already handled the shield barrier above and it let us pass through
+            // Don't apply damage to the shield barrier itself
+            return;
+        }
+        
         // Use bullet position as fallback impact point for trigger hits
+        // Debug.Log($"[Bullet] Hit trigger: {other.name} - applying damage and destroying");
         ApplyDamageIfAny(other, transform.position, -transform.forward);
         CleanupAndDestroy();
     }
