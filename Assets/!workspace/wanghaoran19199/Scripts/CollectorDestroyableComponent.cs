@@ -12,6 +12,8 @@ public class CollectorDestroyableComponent : MonoBehaviour
     [SerializeField] private UnityEvent[] eventsToInvokeAfterEMPStrike;
     private int _remainingChargePowers;
     private bool _hasBeenDisabled;
+    [Header("Events")]
+    [SerializeField] public UnityEvent OnComponentDisabled = new UnityEvent();
     private List<GameObject> _placePointsObjects = new List<GameObject>();
     private GameObject _spawnedTextHint = null;
    
@@ -101,7 +103,8 @@ public class CollectorDestroyableComponent : MonoBehaviour
             _hasBeenDisabled = true;
             DestroyAllPlacePoints();
             DestroyTextHint();
-            DisplayAllDestroyedFX();   
+            DisplayAllDestroyedFX();  
+            OnComponentDisabled.Invoke();
         }
     }
     
@@ -111,7 +114,8 @@ public class CollectorDestroyableComponent : MonoBehaviour
         {
             _hasBeenDisabled = true;
             DestroyAllPlacePoints();
-            DestroyTextHint();   
+            DestroyTextHint();
+            OnComponentDisabled.Invoke();
         }
     }
 

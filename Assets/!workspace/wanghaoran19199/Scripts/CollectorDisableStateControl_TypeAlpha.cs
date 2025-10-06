@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 
@@ -13,6 +14,13 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
     [SerializeField] private GameObject rewardObject;
 
     private bool _isDisabled = false, _isFullyDestroyed = false, _canReceiveRewards = true;
+
+    [Header("Events")]
+    public UnityEvent OnDisabled = new UnityEvent();
+    public UnityEvent OnFullyDestroyed = new UnityEvent();
+
+    public bool IsDisabled => _isDisabled;
+    public bool IsFullyDestroyed => _isFullyDestroyed;
     
     //control collector movement
     private CollectorController  _collectorController;
@@ -57,6 +65,7 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
                     DisableAllComponents();
                     EnableRewards();
                     _collectorNeedStop = true;
+                    OnDisabled.Invoke();
                 }
                 else //locomotion components
                 {
@@ -66,6 +75,7 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
                         DisableAllComponents();
                         EnableRewards();
                         _collectorNeedStop = true;
+                        OnDisabled.Invoke();
                     }
                 }
                 
@@ -77,6 +87,7 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
                         _canReceiveRewards=false;
                         DestroyAllComponents();
                         _collectorNeedStop = true;
+                        OnFullyDestroyed.Invoke();
                         break;
                     }
                 }

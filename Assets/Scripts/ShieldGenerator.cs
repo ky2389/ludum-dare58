@@ -40,6 +40,15 @@ public class ShieldGenerator : MonoBehaviour
     [SerializeField] private AudioClip shieldHitSound;         // When bullet hits shield
     [SerializeField] private AudioClip playerDamageSound;      // When player takes damage in shield
     [SerializeField] private AudioClip shieldDeathSound;       // When shield generator dies
+
+	[Header("EMP Visuals")]
+	[SerializeField] private GameObject activeVisualRoot;      // Enabled when shield is active/normal
+	[SerializeField] private GameObject empDisabledVisualRoot; // Enabled when disabled by EMP
+	[SerializeField] private float empDisableDuration = 6f;     // Seconds to stay disabled before re-enabling
+
+	// EMP state
+	private bool _empDisabled = false;
+	private Coroutine _empRoutine;
     
     [Header("Debug")]
     [SerializeField] private bool enableDebugLogs = false;
@@ -59,9 +68,40 @@ public class ShieldGenerator : MonoBehaviour
     private Coroutine _damageCoroutine;
     private PlayerDamageManager _playerDamageManager;
     
+    void Awake()
+    {
+        // Bind to CollectorDestroyableComponent located on self, parents, or children
+        CollectorDestroyableComponent destroyable = null;
+        destroyable = GetComponent<CollectorDestroyableComponent>();
+        if (!destroyable) destroyable = GetComponentInParent<CollectorDestroyableComponent>();
+        if (!destroyable) destroyable = GetComponentInChildren<CollectorDestroyableComponent>();
+
+        if (destroyable)
+        {
+            destroyable.OnComponentDisabled.AddListener(OnDestroyedByCharges);
+            if (enableDebugLogs)
+                Debug.Log("[ShieldGenerator] Subscribed to OnComponentDisabled on " + destroyable.gameObject.name);
+
+            // If already disabled before we subscribed (order of callbacks can vary), handle immediately
+            if (destroyable.GetHasBeenDisabled())
+            {
+                OnDestroyedByCharges();
+            }
+        }
+        else
+        {
+            if (enableDebugLogs)
+                Debug.LogWarning("[ShieldGenerator] No CollectorDestroyableComponent found on self/parents/children.");
+        }
+    }
+
     void Start()
     {
         InitializeShieldGenerator();
+
+		// Ensure initial visual state
+		if (activeVisualRoot) activeVisualRoot.SetActive(true);
+		if (empDisabledVisualRoot) empDisabledVisualRoot.SetActive(false);
     }
     
     void Update()
@@ -256,6 +296,92 @@ public class ShieldGenerator : MonoBehaviour
         if (_bulletBarrierCollider) _bulletBarrierCollider.enabled = false;
         
         // Destroy after delay
+        Destroy(gameObject, destroyDelay);
+    }
+
+	// ===== EMP disable path =====
+	// Hook this to CollectorDestroyableComponent.eventsToInvokeAfterEMPStrike in the Inspector
+	public void ApplyEmpDisable()
+	{
+		if (_empRoutine != null)
+		{
+			StopCoroutine(_empRoutine);
+		}
+		_empRoutine = StartCoroutine(EmpDisableRoutine());
+	}
+
+	private IEnumerator EmpDisableRoutine()
+	{
+		_empDisabled = true;
+
+		// Close barrier and damage zone (deactivate gameplay)
+		DeactivateShield();
+
+		// Swap visuals to EMP-disabled state (no destruction)
+		if (activeVisualRoot) activeVisualRoot.SetActive(false);
+		if (empDisabledVisualRoot) empDisabledVisualRoot.SetActive(true);
+
+		if (enableDebugLogs)
+			Debug.Log($"[ShieldGenerator] EMP disable applied for {empDisableDuration:F1}s on {gameObject.name}");
+
+		// Wait disabled
+		float t = Mathf.Max(0f, empDisableDuration);
+		while (t > 0f)
+		{
+			// Exit early if destroyed by charges during EMP
+			if (_isDead) yield break;
+			t -= Time.deltaTime;
+			yield return null;
+		}
+
+		// Re-enable only if not dead
+		if (!_isDead)
+		{
+			// Restore visuals
+			if (activeVisualRoot) activeVisualRoot.SetActive(true);
+			if (empDisabledVisualRoot) empDisabledVisualRoot.SetActive(false);
+
+			// Reactivate shield gameplay
+			ActivateShield();
+
+			if (enableDebugLogs)
+				Debug.Log($"[ShieldGenerator] EMP disable ended, shield reactivated on {gameObject.name}");
+		}
+
+		_empDisabled = false;
+		_empRoutine = null;
+	}
+
+    // Called when explosives/EMP disable this component via CollectorDestroyableComponent
+    private void OnDestroyedByCharges()
+    {
+        // Guard against multiple calls
+        if (_isDead) return;
+
+        // Always log this critical event
+        Debug.Log($"[ShieldGenerator] Destroyed by charges/EMP on {gameObject.name} at {transform.position}");
+
+        // Bypass HP and go straight to death flow
+        DeactivateShield();
+
+        if (audioSource && shieldDeathSound)
+            audioSource.PlayOneShot(shieldDeathSound);
+
+        if (deathEffect)
+        {
+            for (int i = 0; i < burstCount; i++)
+            {
+                Vector3 pos = transform.position + Random.insideUnitSphere * burstRadius;
+                pos.y = transform.position.y;
+                Instantiate(deathEffect, pos, Quaternion.identity);
+            }
+        }
+
+        // Disable colliders
+        if (_damageZoneCollider) _damageZoneCollider.enabled = false;
+        if (_bulletBarrierCollider) _bulletBarrierCollider.enabled = false;
+
+        _isDead = true;
         Destroy(gameObject, destroyDelay);
     }
     
