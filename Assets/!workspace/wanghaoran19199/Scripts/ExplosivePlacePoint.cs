@@ -12,13 +12,13 @@ public enum ChargeTypes
 
 public class ExplosivePlacePoint : MonoBehaviour
 {
-    private int[] _chargePowerValues = {2,1}; //power of each type of charge
-    
-    
+    private int[] _chargePowerValues = { 2, 1 }; //power of each type of charge
+
+
     [SerializeField] private Material chargeSemiTransparentMaterial;
     //[SerializeField] [Range(0f,1f)] private float semiTransparentChargeTransparency = 0.45f;
-    [Range(0f,1f)] private float semiTransparentChargeTransparency = 0.2f;
-    
+    [Range(0f, 1f)] private float semiTransparentChargeTransparency = 0.2f;
+
     private bool _semiTransparentChargeDisplayed = false;
     private bool _chargePlaced = false;
     private ChargeTypes _chargeType;
@@ -29,22 +29,22 @@ public class ExplosivePlacePoint : MonoBehaviour
     private void Start()
     {
         GetComponent<MeshRenderer>().enabled = false;
-        
+
         if (semiTransparentChargeTransparency > 1f || semiTransparentChargeTransparency < 0f)
         {
             Debug.LogError("Transparency value invalid!");
         }
 
         _parentComponentScript = transform.parent.gameObject.GetComponent<CollectorDestroyableComponent>();
-        if (!_parentComponentScript)
-        {
-            Debug.LogError("Script not properly attached to parent!");
-        }
+        /* if (!_parentComponentScript)
+         {
+             Debug.LogError("Script not properly attached to parent!");
+         }*/
     }
 
 
     #region Display semi-transparent charge object for guidance before it is actually placed
-    
+
     public void DisplaySemiTransparentChargeBeforePlacement(GameObject chargePrefab)
     {
         if (!_semiTransparentChargeDisplayed)
@@ -68,7 +68,7 @@ public class ExplosivePlacePoint : MonoBehaviour
         {
             Destroy(_semiTransparentTemporaryChargeObject);
             _semiTransparentTemporaryChargeObject = null;
-            _semiTransparentChargeDisplayed=false;
+            _semiTransparentChargeDisplayed = false;
         }
     }
 
@@ -93,7 +93,7 @@ public class ExplosivePlacePoint : MonoBehaviour
         {
             try
             {
-                Renderer rend =  _semiTransparentTemporaryChargeObject.GetComponent<Renderer>();
+                Renderer rend = _semiTransparentTemporaryChargeObject.GetComponent<Renderer>();
 
 
                 rend.material = chargeSemiTransparentMaterial;
@@ -131,26 +131,26 @@ public class ExplosivePlacePoint : MonoBehaviour
             return;
         }
     }
-    
+
     #endregion
-    
+
     public void PlaceCharge(ChargeTypes chargeType, GameObject chargePrefab)
     {
         if (!_chargePlaced)
         {
-            if ((int)chargeType<System.Enum.GetValues(typeof(ChargeTypes)).Length)
+            if ((int)chargeType < System.Enum.GetValues(typeof(ChargeTypes)).Length)
             {
-                _chargeObject = Instantiate(chargePrefab, transform.position, Quaternion.identity);  
+                _chargeObject = Instantiate(chargePrefab, transform.position, Quaternion.identity);
                 _chargeObject.transform.SetParent(transform);
-                _chargeType=chargeType;
-                _chargePlaced=true;
+                _chargeType = chargeType;
+                _chargePlaced = true;
                 return;
             }
-            
+
             Debug.LogError("Unknown charge type!");
             return;
         }
-        
+
     }
 
     public async void DetonateCharge()
@@ -163,7 +163,7 @@ public class ExplosivePlacePoint : MonoBehaviour
         else
         {
             _chargeObject.GetComponent<MeshRenderer>().enabled = false;
-            
+
             foreach (Transform child in _chargeObject.transform)
             {
                 if (child.name.Contains("FX"))
@@ -176,11 +176,11 @@ public class ExplosivePlacePoint : MonoBehaviour
             {
                 _parentComponentScript.TriggerEMPStrikeEffect();
             }
-            
+
             _parentComponentScript.DealDamageToComponent(_chargePowerValues[(int)_chargeType]);
 
             await Task.Delay(2000);
-            
+
             Destroy(_chargeObject);
 
             await Task.Delay(100);
@@ -204,5 +204,5 @@ public class ExplosivePlacePoint : MonoBehaviour
         Destroy(_chargeObject);
     }
 
-    
+
 }
