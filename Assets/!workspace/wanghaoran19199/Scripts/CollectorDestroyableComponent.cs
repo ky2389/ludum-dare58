@@ -34,12 +34,7 @@ public class CollectorDestroyableComponent : MonoBehaviour
         {
             if (!_hasBeenDisabled)
             {
-                StartCoroutine(DestroyPlacePoints());
-            
-                DestroyTextHint();
-                _hasBeenDisabled = true;
-                Debug.Log("This component has been disabled!");
-                //TODO   
+                DestroyThisComponent();
             }
         }
     }
@@ -50,6 +45,46 @@ public class CollectorDestroyableComponent : MonoBehaviour
         foreach (GameObject placePointObject in _placePointsObjects)
         {
             Destroy(placePointObject);
+        }
+    }
+    
+    private void DestroyAllPlacePoints()
+    {
+        StartCoroutine(DestroyPlacePoints());
+    }
+    
+    private void DisplayAllDestroyedFX()
+    {
+        foreach (Transform child in transform.GetComponentsInChildren<Transform>())
+        {
+            if (child.name.Contains("FX"))
+            {
+                child.gameObject.GetComponent<ParticleSystem>().Play();
+            }
+        }
+    }
+    
+
+    #region publically accessible functions
+
+    public void DestroyThisComponent()
+    {
+        if (!_hasBeenDisabled)
+        {
+            _hasBeenDisabled = true;
+            DestroyAllPlacePoints();
+            DestroyTextHint();
+            DisplayAllDestroyedFX();   
+        }
+    }
+    
+    public void DisableThisComponent()
+    {
+        if (!_hasBeenDisabled)
+        {
+            _hasBeenDisabled = true;
+            DestroyAllPlacePoints();
+            DestroyTextHint();   
         }
     }
 
@@ -81,4 +116,6 @@ public class CollectorDestroyableComponent : MonoBehaviour
     {
         return _hasBeenDisabled;
     }
+    
+    #endregion
 }
