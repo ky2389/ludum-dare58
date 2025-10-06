@@ -205,7 +205,13 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                     
                     _placePointsWithAPlacedCharge.Add(_nearestPlacePoint);
                     _chargeNumbers[(int)_currentlyEquippedChargeType] -= 1;
-                    DisableSemiTransparentChargeDisplayOnPlacePoint();
+                    
+                    // Material mat = _nearestPlacePoint.gameObject.GetComponent<MeshRenderer>().material;
+                    // Color c = mat.color;
+                    // c.a = 0;
+                    // mat.color = c;
+                    _nearestPlacePoint.GetComponent<MeshRenderer>().enabled = false;
+                    DisableSemiTransparentChargeDisplayOnPlacePoint(); //visuals
                 }
                 else
                 {

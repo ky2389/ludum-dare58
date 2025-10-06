@@ -19,7 +19,7 @@ public class ExplosivePlacePoint : MonoBehaviour
     //[SerializeField] [Range(0f,1f)] private float semiTransparentChargeTransparency = 0.45f;
     [Range(0f,1f)] private float semiTransparentChargeTransparency = 0.2f;
     
-    [NonSerialized] public bool SemiTransparentChargeDisplayed = false;
+    private bool _semiTransparentChargeDisplayed = false;
     private bool _chargePlaced = false;
     private ChargeTypes _chargeType;
     private GameObject _semiTransparentTemporaryChargeObject, _chargeObject;
@@ -47,17 +47,19 @@ public class ExplosivePlacePoint : MonoBehaviour
     
     public void DisplaySemiTransparentChargeBeforePlacement(GameObject chargePrefab)
     {
-        if (!SemiTransparentChargeDisplayed)
+        if (!_semiTransparentChargeDisplayed)
         {
             _semiTransparentTemporaryChargeObject = Instantiate(chargePrefab, transform.position, Quaternion.identity);
             SetTemporaryChargeMaterialSemiTransparent();
-            SemiTransparentChargeDisplayed = true;
+            _semiTransparentChargeDisplayed = true;
+
+            GetComponent<MeshRenderer>().enabled = false;
         }
     }
 
     public void StopDisplaySemiTransparentCharge()
     {
-        if (!SemiTransparentChargeDisplayed || !_semiTransparentTemporaryChargeObject)
+        if (!_semiTransparentChargeDisplayed || !_semiTransparentTemporaryChargeObject)
         {
             Debug.LogError("Stop display semi-transparent charge: error occurred!");
             return;
@@ -66,13 +68,13 @@ public class ExplosivePlacePoint : MonoBehaviour
         {
             Destroy(_semiTransparentTemporaryChargeObject);
             _semiTransparentTemporaryChargeObject = null;
-            SemiTransparentChargeDisplayed=false;
+            _semiTransparentChargeDisplayed=false;
         }
     }
 
     public void SwitchSemiTransparentChargeDisplayed(GameObject chargePrefab)
     {
-        if (!SemiTransparentChargeDisplayed || !_semiTransparentTemporaryChargeObject)
+        if (!_semiTransparentChargeDisplayed || !_semiTransparentTemporaryChargeObject)
         {
             Debug.LogError("Switch display semi-transparent charge: error occurred!");
             return;
@@ -186,9 +188,16 @@ public class ExplosivePlacePoint : MonoBehaviour
         return !_chargePlaced;
     }
 
+    public bool CheckCanBeShownInScan()
+    {
+        return !(_chargePlaced || _semiTransparentChargeDisplayed);
+    }
+
     private void OnDestroy()
     {
         Destroy(_semiTransparentTemporaryChargeObject);
         Destroy(_chargeObject);
     }
+
+    
 }

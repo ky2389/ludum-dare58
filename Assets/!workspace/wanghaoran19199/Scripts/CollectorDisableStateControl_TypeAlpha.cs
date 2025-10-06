@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
 {
@@ -11,6 +13,11 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
     [SerializeField] private GameObject rewardObject;
 
     private bool _isDisabled = false, _isFullyDestroyed = false, _canReceiveRewards = true;
+    
+    //control collector movement
+    private CollectorController  _collectorController;
+    private bool _collectorNeedStop;
+    private float _collectorCurrentSpeed;
 
 
     private void Start()
@@ -21,12 +28,20 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
         {
             Debug.LogError("Wrong number of locomotion objects");
         }
+
+        _collectorController = transform.parent.GetComponent<CollectorController>();
+        if (!_collectorController)
+        {
+            Debug.LogError("No collectorController found on parent collector!");
+        }
+        _collectorCurrentSpeed=_collectorController.speed;
     }
 
 
     private void Update()
     {
         CheckDestructionState();
+        MakeCollectorStop();
     }
 
     private void CheckDestructionState()
@@ -36,19 +51,21 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
             
             if (!_isDisabled)
             {
-                if (computerRoomObject.GetHasBeenDisabled())
+                if (computerRoomObject.GetHasBeenDisabled()) //main computer disabled
                 {
                     _isDisabled = true;
-                    DestroyAllComponents();
+                    DisableAllComponents();
                     EnableRewards();
+                    _collectorNeedStop = true;
                 }
                 else //locomotion components
                 {
                     if (locomotionObjects[0].GetHasBeenDisabled() && locomotionObjects[1].GetHasBeenDisabled())
                     {
                         _isDisabled = true;
-                        DestroyAllComponents();
+                        DisableAllComponents();
                         EnableRewards();
+                        _collectorNeedStop = true;
                     }
                 }
                 
@@ -59,6 +76,7 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
                         _isFullyDestroyed = true;
                         _canReceiveRewards=false;
                         DestroyAllComponents();
+                        _collectorNeedStop = true;
                         break;
                     }
                 }
@@ -81,7 +99,26 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
         }
     }
 
+    #region collector movement control
 
+    private void MakeCollectorStop()
+    {
+        if (_collectorNeedStop)
+        {
+            // if (_collectorCurrentSpeed > 0)
+            // {
+            //     _collectorCurrentSpeed -= Random.Range(0.1f, 1f)*Time.deltaTime;
+            //     _collectorController.speed=_collectorCurrentSpeed;
+            // }
+            _collectorController.StartGradualStop();
+            
+        }
+    }
+
+    #endregion
+
+    #region destroy or disable components
+    
     private void DestroyAllComponents()
     {
         foreach (var fuelTank in fuelTankObjects)
@@ -98,7 +135,7 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
         cargoHoldObject.DestroyThisComponent();
     }
     
-    private void DsiableAllComponents()
+    private void DisableAllComponents()
     {
         foreach (var fuelTank in fuelTankObjects)
         {
@@ -113,4 +150,6 @@ public class CollectorDisableStateControl_TypeAlpha : MonoBehaviour
         computerRoomObject.DisableThisComponent();
         cargoHoldObject.DisableThisComponent();
     }
+    
+    #endregion
 }

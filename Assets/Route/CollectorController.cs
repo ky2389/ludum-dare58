@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
@@ -16,9 +18,23 @@ public class CollectorController : MonoBehaviour
     private Vector3 targetPosition; // 当前目标位置
     private Quaternion targetRotation; // 当前目标旋转
     private bool isMoving = false; // 是否正在移动
+    
+    //appended variables
+    private Sequence moveSequence;
+    
+    private bool isDecelerating = false; 
+    private Vector3 currentVelocity = Vector3.zero; 
+    private float initialSpeed; // Stores the speed at the moment of stopping
+    private float decelerationDuration; // How long the final move takes
+    private float startTime; // To track the start of the final deceleration
+    
+    public List<Animator> _animators = new List<Animator>();
+    private float initialAnimSpeed = 1.0f; // Assuming the animation starts at normal speed
 
     private void Start()
     {
+        decelerationDuration=Random.Range(5f, 11f);
+        
         targetPosition = transform.position;
         targetRotation = transform.rotation;
         if (!pathParent)
@@ -27,6 +43,9 @@ public class CollectorController : MonoBehaviour
             return;
         }
         StartMovement();
+
+        _animators = GetComponentsInChildren<Animator>(true).ToList();
+        Debug.Log(_animators.Count);
     }
 
     private void StartMovement()
@@ -111,7 +130,7 @@ public class CollectorController : MonoBehaviour
         targetPosition = fullPath[0];
 
         // DOTween 移动控制
-        Sequence seq = DOTween.Sequence();
+        moveSequence = DOTween.Sequence();
         Quaternion currentRot = transform.rotation;
         Vector3 currentPos = fullPath[0];
 
@@ -166,8 +185,8 @@ public class CollectorController : MonoBehaviour
                     targetPosition = transform.position;
                     targetRotation = transform.rotation;
                 });
-            seq.Append(moveTween);
-            seq.Join(rotateTween);
+            moveSequence.Append(moveTween);
+            moveSequence.Join(rotateTween);
 
             currentPos = nextPos;
             currentRot = targetRot;
@@ -175,41 +194,86 @@ public class CollectorController : MonoBehaviour
 
         if (loopPath)
         {
-            seq.SetLoops(-1);
+            moveSequence.SetLoops(-1);
         }
-        seq.OnStart(() => isMoving = true);
-        seq.OnComplete(() => isMoving = false);
-        seq.Play();
+        moveSequence.OnStart(() => isMoving = true);
+        moveSequence.OnComplete(() => isMoving = false);
+        moveSequence.Play();
     }
 
+    // private void FixedUpdate()
+    // {
+    //     if (isMoving)
+    //     {
+    //         // 物理步长平滑插值
+    //         transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.fixedDeltaTime);
+    //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.fixedDeltaTime);
+    //     }
+    // }
+    //
+    // private void Update()
+    // {
+    //     if (isMoving)
+    //     {
+    //         // 每帧平滑插值
+    //         transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
+    //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+    //     }
+    // }
+    //
+    // private void LateUpdate()
+    // {
+    //     if (isMoving)
+    //     {
+    //         // 渲染前平滑插值
+    //         transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
+    //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+    //     }
+    // }
+    
     private void FixedUpdate()
     {
-        if (isMoving)
+        if (isDecelerating)
         {
-            // 物理步长平滑插值
-            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.fixedDeltaTime);
-        }
-    }
+            // 1. Calculate interpolation factor (t)
+            float elapsedTime = Time.time - startTime;
+            float t = Mathf.Clamp01(elapsedTime / decelerationDuration); // t goes from 0 to 1
+            float easedT = t * t; // Simple Ease-Out Quad formula
 
-    private void Update()
-    {
-        if (isMoving)
-        {
-            // 每帧平滑插值
-            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
-        }
-    }
+            // 2. Interpolate the speed from initialSpeed to 0
+            float currentSpeed = Mathf.Lerp(initialSpeed, 0f, t);
+            float currentAnimSpeed = Mathf.Lerp(initialAnimSpeed, 0f, easedT);
 
-    private void LateUpdate()
-    {
-        if (isMoving)
-        {
-            // 渲染前平滑插值
-            transform.position = Vector3.Lerp(transform.position, targetPosition, positionLerpSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+            // 3. Apply the new velocity
+            Vector3 newVelocity = currentVelocity.normalized * currentSpeed;
+            
+            foreach (Animator animator in _animators)
+            {
+                animator.speed = currentAnimSpeed;
+            }
+
+            // 4. Apply movement
+            transform.position += newVelocity * Time.fixedDeltaTime;
+
+            // 5. Check for stop condition
+            if (t >= 1f)
+            {
+                currentVelocity = Vector3.zero;
+                isDecelerating = false;
+                // Ensure no rotation is applied by the old system
+                targetRotation = transform.rotation;
+
+                foreach (Animator animator in _animators)
+                {
+                    animator.speed = 0f; // Ensure it's exactly 0 at the end
+                }
+              
+            }
+        
+            // Ensure no rotation is applied during the straight-line coast
+            transform.rotation = targetRotation;
         }
+        // DELETE/COMMENT OUT the old redundant Lerp code here
     }
 
     // ====== 辅助函数 ======
@@ -308,4 +372,60 @@ public class CollectorController : MonoBehaviour
             (-p0 + 3f * p1 - 3f * p2 + p3) * t3
         );
     }
+
+
+
+    #region publically accessible functions
+    
+    public void StopMovement()
+    {
+        if (moveSequence != null && moveSequence.IsActive())
+        {
+            moveSequence.Kill(true); // true means complete any currently running step instantly
+            isMoving = false; // Manually set the state
+            
+            // OPTIONAL: Reset the targets so the redundant Lerp calls stop trying to move
+            targetPosition = transform.position;
+            targetRotation = transform.rotation;
+        }
+    }
+
+    public void StartGradualStop()
+    {
+        if (isMoving)
+        {
+            // Stop any existing stop attempt
+            StopCoroutine(nameof(TimedDecelerationCoroutine));
+            StartCoroutine(TimedDecelerationCoroutine());
+        }
+    }
+
+    private IEnumerator TimedDecelerationCoroutine()
+    {
+        
+        float randomDelay = Random.Range(0.5f, 1.5f);
+
+        // 2. Wait for the random time
+        yield return new WaitForSeconds(randomDelay);
+        
+        // 3. Start the Deceleration
+        if (moveSequence != null && moveSequence.IsActive())
+        {
+            // 1. CAPTURE VELOCITY AND SPEED
+            Vector3 direction = transform.forward; 
+            currentVelocity = direction * speed; 
+            initialSpeed = speed; // Store the vehicle's current speed
+
+            // 2. KILL THE PATH SEQUENCE
+            moveSequence.Kill(false);
+        
+            // 3. SET NEW STATE
+            isMoving = false;
+            isDecelerating = true;
+            startTime = Time.time;
+        }
+    }
+    
+
+    #endregion
 }

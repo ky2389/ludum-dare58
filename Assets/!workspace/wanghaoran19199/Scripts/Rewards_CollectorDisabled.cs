@@ -59,9 +59,12 @@ public class Rewards_CollectorDisabled : MonoBehaviour
 
     private void ReceiveAwards()
     {
+        Debug.Log("received awards");
         foreach (UnityEvent unityEvent in eventsToInvokeAfterRewardsAreReceived)
         {
             unityEvent.Invoke();
         }
+        _UIHint.gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
