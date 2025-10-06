@@ -101,7 +101,7 @@ public class Fort : MonoBehaviour
         // 使用 bulletSpawnPoint 的当前朝向发射射线
         Vector3 rayOrigin = bulletSpawnPoint ? bulletSpawnPoint.transform.position : transform.position;
         Vector3 rayDirection = bulletSpawnPoint ? bulletSpawnPoint.transform.forward : transform.forward;
-
+        
         // 发射射线，检测是否击中玩家 (使用LayerMask忽略护盾)
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, detectionRange, detectionLayerMask, QueryTriggerInteraction.Ignore))
         {
