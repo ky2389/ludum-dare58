@@ -226,6 +226,8 @@ public class GameManager : MonoBehaviour
             LoadNextBuildIndex();
             return;
         }
+        // Cursor.lockState = CursorLockMode.None;
+        // Cursor.visible = true;
         SceneManager.LoadScene(winScene);
     }
 
