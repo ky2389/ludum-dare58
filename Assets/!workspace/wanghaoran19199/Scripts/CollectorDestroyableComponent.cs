@@ -34,12 +34,8 @@ public class CollectorDestroyableComponent : MonoBehaviour
         {
             if (!_hasBeenDisabled)
             {
-                StartCoroutine(DestroyPlacePoints());
-            
-                DestroyTextHint();
-                _hasBeenDisabled = true;
-                Debug.Log("This component has been disabled!");
-                //TODO   
+                DestroyThisComponent();
+                Debug.Log("Component has been disabled");
             }
         }
     }
@@ -52,10 +48,56 @@ public class CollectorDestroyableComponent : MonoBehaviour
             Destroy(placePointObject);
         }
     }
+    
+    private void DestroyAllPlacePoints()
+    {
+        StartCoroutine(DestroyPlacePoints());
+    }
+    
+    private void DisplayAllDestroyedFX()
+    {
+        foreach (Transform child in transform)
+        {
+            //Debug.Log(child.name);
+            foreach (Transform child1 in child.transform)
+            {
+                //Debug.Log(child1.name);
+                if (child1.name.Contains("FX"))
+                {
+                    child1.gameObject.GetComponent<ParticleSystem>().Play();
+                }
+            }
+        }
+    }
+    
+
+    #region publically accessible functions
+
+    public void DestroyThisComponent()
+    {
+        if (!_hasBeenDisabled)
+        {
+            _hasBeenDisabled = true;
+            DestroyAllPlacePoints();
+            DestroyTextHint();
+            DisplayAllDestroyedFX();   
+        }
+    }
+    
+    public void DisableThisComponent()
+    {
+        if (!_hasBeenDisabled)
+        {
+            _hasBeenDisabled = true;
+            DestroyAllPlacePoints();
+            DestroyTextHint();   
+        }
+    }
 
     public void DealDamageToComponent(int powerOfCharge)
     {
         _remainingChargePowers -= powerOfCharge;
+        //Debug.Log(powerOfCharge);
     }
 
     public void SpawnTextHintForScan(GameObject textObjectPrefab, float yPos)
@@ -81,4 +123,6 @@ public class CollectorDestroyableComponent : MonoBehaviour
     {
         return _hasBeenDisabled;
     }
+    
+    #endregion
 }
