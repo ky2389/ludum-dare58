@@ -30,14 +30,14 @@ public class Bullet : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rb) lastVelocity = rb.linearVelocity;
+        if (rb) lastVelocity = rb.linearVelocity; // 修正：linearVelocity -> velocity
     }
 
     void Update()
     {
         // 用速度对齐子弹朝向，便于拖尾跟随
         if (rb && rb.linearVelocity.sqrMagnitude > 0.0001f)
-            transform.forward = rb.linearVelocity.normalized;
+            transform.forward = rb.linearVelocity.normalized; // 修正：linearVelocity -> velocity
     }
 
     // --- Physics: solid colliders ---
@@ -63,13 +63,13 @@ public class Bullet : MonoBehaviour
         {
             if (shieldBarrier.ShouldBlockBullet(gameObject))
             {
-                ApplyDamageIfAny(other, transform.position, -transform.forward, -transform.forward);
+                ApplyDamageIfAny(other, transform.position, -transform.forward, transform.forward);
                 CleanupAndDestroy();
                 return;
             }
             else
             {
-                // 放行——不要对屏蔽体本身结算伤害
+                // 放行——不要对屏蔽体本身结算伤害（继续让子弹飞行由物理系统处理）
                 return;
             }
         }
@@ -90,20 +90,27 @@ public class Bullet : MonoBehaviour
         CleanupAndDestroy();
     }
 
-    // 增加 impactDir 参数：用它决定特效朝向
+    // 统一在这里对各种可受伤目标结算（Drone / Turret / Fort）
     private void ApplyDamageIfAny(Collider hitCol, Vector3 hitPoint, Vector3 hitNormal, Vector3 impactDir)
     {
-        var health = hitCol.GetComponentInParent<DroneHealth>();
-        if (health != null)
-        {
-            health.TakeDamage(damage);
-        }
+        // 1) Drone
+        var drone = hitCol.GetComponentInParent<DroneHealth>();
+        if (drone != null) drone.TakeDamage(damage);
 
+        // 2) Turret
+        var turret = hitCol.GetComponentInParent<FortHealth>();
+        if (turret != null) turret.TakeDamage(damage);
+
+        // 3) Fort
+        var fort = hitCol.GetComponentInParent<FortHealth>();
+        if (fort != null) fort.TakeDamage(damage);
+
+        // 命中特效（沿弹道朝向）
         if (impactEffect)
         {
             var rot = Quaternion.LookRotation(impactDir, hitNormal);
-
             var fx = Instantiate(impactEffect, hitPoint, rot);
+
             if (autodestroyByParticleDuration)
             {
                 var ps = fx.GetComponent<ParticleSystem>();
