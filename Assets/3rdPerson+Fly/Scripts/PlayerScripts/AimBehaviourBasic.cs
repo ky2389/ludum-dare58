@@ -20,7 +20,14 @@ public class AimBehaviourBasic : GenericBehaviour
 	// =========================
 	public string aimButton = "Aim", shoulderButton = "Aim Shoulder"; // Input axes
 	public Texture2D crosshair;                                       // Crosshair texture
-	public float aimTurnSmoothing = 0.15f;                            // Yaw smoothing while aiming
+	public float aimTurnSmoothing = 0.15f;
+	[Header("Aim Yaw Offset")]
+	[Tooltip("瞄准时给角色相对相机的偏航角（度）。负值=向左偏一点，正值=向右。")]
+	public float aimYawOffsetDegrees = -8f;
+
+	[Tooltip("偏航角是否跟随左右肩。开启后会根据 aimCamOffset.x 方向自动取左右。")]
+	public bool yawOffsetFollowsShoulder = true;
+	// Yaw smoothing while aiming
 	public Vector3 aimPivotOffset = new Vector3(0.5f, 1.2f, 0f);      // Camera pivot offset in aim
 	public Vector3 aimCamOffset = new Vector3(0f, 0.4f, -0.7f);       // Camera local offset in aim
 	public float blendSpeed = 8f;                                     // Chest layer blend speed
@@ -183,7 +190,24 @@ public class AimBehaviourBasic : GenericBehaviour
 		forward.y = 0.0f;
 		forward = forward.normalized;
 
-		Quaternion targetRotation = Quaternion.Euler(0, behaviourManager.GetCamScript.GetH, 0);
+		// === 新增：计算瞄准时的偏航角 ===
+		float yawBias = 0f;
+		if (aim)
+		{
+			if (yawOffsetFollowsShoulder)
+			{
+				// 右肩(aimCamOffset.x>0)时让角色略向左（负角），左肩则相反
+				float sign = Mathf.Sign(aimCamOffset.x);
+				yawBias = -sign * Mathf.Abs(aimYawOffsetDegrees);
+			}
+			else
+			{
+				// 固定向左（负）或向右（正）
+				yawBias = aimYawOffsetDegrees;
+			}
+		}
+
+		Quaternion targetRotation = Quaternion.Euler(0, behaviourManager.GetCamScript.GetH + yawBias, 0);
 		float minSpeed = Quaternion.Angle(transform.rotation, targetRotation) * aimTurnSmoothing;
 
 		behaviourManager.SetLastDirection(forward);
@@ -225,7 +249,7 @@ public class AimBehaviourBasic : GenericBehaviour
 				rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // smoother trails on fast bullets
 				rb.linearVelocity = dir * bulletSpeed; // Gravity will take over if enabled on Rigidbody
 			}
-			
+
 			// Check if bullet is spawned inside a shield and mark it as outgoing
 			ShieldAwareBulletSpawner shieldAware = GetComponent<ShieldAwareBulletSpawner>();
 			if (shieldAware != null)
