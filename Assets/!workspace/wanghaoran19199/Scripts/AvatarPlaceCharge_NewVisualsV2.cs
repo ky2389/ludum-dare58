@@ -42,14 +42,14 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     
     
     //inventory display
-    private int[] _chargeNumbers = {10, 0}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
+    private int[] _chargeNumbers = {10, 4}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
     public int RegularChargeCount => _chargeNumbers[(int)ChargeTypes.Regular];
     public int EMPChargeCount => _chargeNumbers[(int)ChargeTypes.EMP];
     public bool HasAnyAmmo => (RegularChargeCount > 0) || (EMPChargeCount > 0);
 
     [Header("Events")]
     public UnityEvent OnInventoryChanged = new UnityEvent();
-    public bool _EMPIsUnlocked = false;
+    public bool _EMPIsUnlocked = true;
 
     [Header("TMP Displays")]
     //[SerializeField] private TextMeshProUGUI currentChargeTypeText;
