@@ -21,6 +21,7 @@ public class Fort : MonoBehaviour
 
     [Header("检测")] 
     [SerializeField] private float detectionRange = 500f;
+    [SerializeField] private LayerMask detectionLayerMask = -1; // What layers to detect (exclude shield layers)
 
     private Vector3 initialPosition;
     private Quaternion referenceRotation; // 初始参考方向，基于 bulletSpawnPoint
@@ -101,8 +102,8 @@ public class Fort : MonoBehaviour
         Vector3 rayOrigin = bulletSpawnPoint ? bulletSpawnPoint.transform.position : transform.position;
         Vector3 rayDirection = bulletSpawnPoint ? bulletSpawnPoint.transform.forward : transform.forward;
 
-        // 发射射线，检测是否击中玩家
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, detectionRange))
+        // 发射射线，检测是否击中玩家 (使用LayerMask忽略护盾)
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, detectionRange, detectionLayerMask, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider == playerCollider)
             {
