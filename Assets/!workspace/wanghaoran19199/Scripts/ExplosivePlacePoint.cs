@@ -171,6 +171,11 @@ public class ExplosivePlacePoint : MonoBehaviour
                     child.GetComponent<ParticleSystem>().Play();
                 }
             }
+
+            if (_chargeType == ChargeTypes.EMP)
+            {
+                _parentComponentScript.TriggerEMPStrikeEffect();
+            }
             
             _parentComponentScript.DealDamageToComponent(_chargePowerValues[(int)_chargeType]);
 

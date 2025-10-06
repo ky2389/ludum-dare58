@@ -2,6 +2,7 @@
 //also manages which type of charge is being equipped and will be placed
 //also manages charge inventory & display of this inventory
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -32,6 +33,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     [Header("Prefabs for Explosive Charges")]
     [SerializeField] private GameObject[] chargeObjectPrefabs; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the prefab for regular charges
     
+    private PlayerDamageManager _playerDamageManager;
     private GameObject _nearestPlacePoint;
     private ChargeTypes _currentlyEquippedChargeType = ChargeTypes.Regular;
     private List<GameObject> _placePointsWithAPlacedCharge=new List<GameObject>();
@@ -41,14 +43,31 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     //inventory display
     private int[] _chargeNumbers = {10, 0}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
     private bool _EMPIsUnlocked = false;
+
     [Header("TMP Displays")]
-    [SerializeField] private TextMeshProUGUI currentChargeTypeText;
+    //[SerializeField] private TextMeshProUGUI currentChargeTypeText;
+    [SerializeField]
+    private GameObject[] currentlyEquippedChargesIcons;
     [SerializeField] private TextMeshProUGUI regularChargeNumberText;
-    [SerializeField] private TextMeshProUGUI EMPChargeNameText, EMPChargeNumberText;
+    [SerializeField] private GameObject EMPDisplay;
+    [SerializeField] private TextMeshProUGUI EMPChargeNumberText;
     [SerializeField] private TextMeshProUGUI placeChargePrompt, detonateChargePrompt;
-    
-    
-    
+
+
+    private void Start()
+    {
+        if (currentlyEquippedChargesIcons.Length != 2)
+        {
+            Debug.LogError("Incorrect number of charge display objects");
+        }
+        
+        _playerDamageManager=GetComponentInParent<PlayerDamageManager>();
+        if (!_playerDamageManager)
+        {
+            Debug.LogError("No player damage manager found");
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -65,31 +84,34 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     //controls UI display & charge type switching
     private void ChargeDisplayControl()
     {
-        // Null check to prevent NullReferenceException
-        if (currentChargeTypeText != null)
+        if (_currentlyEquippedChargeType == ChargeTypes.Regular)
         {
-            currentChargeTypeText.text = _currentlyEquippedChargeType.ToString();
+            currentlyEquippedChargesIcons[0].SetActive(true);
+            currentlyEquippedChargesIcons[1].SetActive(false);
+        }
+        else if (_currentlyEquippedChargeType == ChargeTypes.EMP)
+        {
+            currentlyEquippedChargesIcons[0].SetActive(false);
+            currentlyEquippedChargesIcons[1].SetActive(true);
         }
         
         if (_EMPIsUnlocked)
         {
-            if (EMPChargeNameText != null)
-                EMPChargeNameText.enabled = true;
-            if (EMPChargeNumberText != null)
-                EMPChargeNumberText.enabled = true;
+            EMPDisplay.SetActive(true);
+            // if (EMPChargeNumberText)
+            //     EMPChargeNumberText.enabled = true;
         }
         else
         {
-            if (EMPChargeNameText != null)
-                EMPChargeNameText.enabled = false;
-            if (EMPChargeNumberText != null)
-                EMPChargeNumberText.enabled = false;
+            EMPDisplay.SetActive(false);
+            // if (EMPChargeNumberText)
+            //     EMPChargeNumberText.enabled = false;
         }
 
-        if (placeChargePrompt != null)
+        if (placeChargePrompt)
             placeChargePrompt.enabled = _nearestPlacePoint;
 
-        if (detonateChargePrompt != null)
+        if (detonateChargePrompt)
             detonateChargePrompt.enabled = _placePointsWithAPlacedCharge.Count > 0;
         
         if (regularChargeNumberText != null)
@@ -255,8 +277,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                         if (Vector3.Distance(transform.position, placePointObject.transform.position) <=
                             chargeDamageSelfMaxRadius)
                         {
-                            Debug.Log("Damaged by exploding charge!");
-                            //TODO
+                            _playerDamageManager.TakeDamageNoKnockback(5f, "Explosive Placed by Self");
                         }
                     }
                     

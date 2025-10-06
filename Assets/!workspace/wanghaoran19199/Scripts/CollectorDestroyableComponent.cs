@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectorDestroyableComponent : MonoBehaviour
 {
     [SerializeField] private string componentName = "ERR";
     [SerializeField] private int numberOfChargePowersNeeded = 8; //how many charge powers needed to disable this component?
+    [SerializeField] private UnityEvent[] eventsToInvokeAfterEMPStrike;
     private int _remainingChargePowers;
     private bool _hasBeenDisabled;
     private List<GameObject> _placePointsObjects = new List<GameObject>();
@@ -141,6 +143,14 @@ public class CollectorDestroyableComponent : MonoBehaviour
     public bool GetHasBeenDisabled()
     {
         return _hasBeenDisabled;
+    }
+
+    public void TriggerEMPStrikeEffect()
+    {
+        foreach (UnityEvent unityEvent in eventsToInvokeAfterEMPStrike)
+        {
+            unityEvent.Invoke();
+        }
     }
     
     #endregion
