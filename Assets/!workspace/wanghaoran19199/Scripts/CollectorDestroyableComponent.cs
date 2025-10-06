@@ -26,6 +26,8 @@ public class CollectorDestroyableComponent : MonoBehaviour
                 _placePointsObjects.Add(child.gameObject);
             }
         }
+        
+        //StopAllDestroyedFX();
     }
 
     private void Update()
@@ -56,6 +58,7 @@ public class CollectorDestroyableComponent : MonoBehaviour
     
     private void DisplayAllDestroyedFX()
     {
+        Debug.Log("All VFX displayed");
         foreach (Transform child in transform)
         {
             //Debug.Log(child.name);
@@ -65,6 +68,22 @@ public class CollectorDestroyableComponent : MonoBehaviour
                 if (child1.name.Contains("FX"))
                 {
                     child1.gameObject.GetComponent<ParticleSystem>().Play();
+                }
+            }
+        }
+    }
+    
+    private void StopAllDestroyedFX()
+    {
+        foreach (Transform child in transform)
+        {
+            //Debug.Log(child.name);
+            foreach (Transform child1 in child.transform)
+            {
+                //Debug.Log(child1.name);
+                if (child1.name.Contains("FX"))
+                {
+                    child1.gameObject.GetComponent<ParticleSystem>().Stop();
                 }
             }
         }

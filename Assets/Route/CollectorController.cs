@@ -28,7 +28,7 @@ public class CollectorController : MonoBehaviour
     private float decelerationDuration; // How long the final move takes
     private float startTime; // To track the start of the final deceleration
     
-    public List<Animator> _animators = new List<Animator>();
+    private List<Animator> _animators = new List<Animator>();
     private float initialAnimSpeed = 1.0f; // Assuming the animation starts at normal speed
 
     private void Start()
@@ -45,7 +45,7 @@ public class CollectorController : MonoBehaviour
         StartMovement();
 
         _animators = GetComponentsInChildren<Animator>(true).ToList();
-        Debug.Log(_animators.Count);
+        //Debug.Log(_animators.Count);
     }
 
     private void StartMovement()

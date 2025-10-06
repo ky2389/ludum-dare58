@@ -5,20 +5,84 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ad4c1a3-a316-4567-9b4c-bde96b85fba8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/INab Studio/Post Processing Assets/World Scan FX/2021 Package/URP 2021.unitypackage.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/INab Studio/Post Processing Assets/World Scan FX/Built-in.unitypackage.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/INab Studio/Post Processing Assets/World Scan FX/URP 2022.unitypackage.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/INab Studio/Post Processing Assets/World Scan FX/URP 6.unitypackage.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scenes/aa.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scenes/aa.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scenes/lv1_1006_v1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scenes/lv1_1006_v1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarPlaceCharge_NewVisualsV2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarPlaceCharge_NewVisualsV2.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarScan.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/AvatarScan.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/ScanFXMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/ScanFXMaterial.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/SemiTransparent_Blue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/SemiTransparent_Blue.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/Avatar_PlaceCharge_Scan.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/Avatar_PlaceCharge_Scan.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/Canvas.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/Canvas.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/CollectorComponent_Destroyable.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Prefabs/CollectorComponent_Destroyable.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/ExplosivePlacePoint.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/Rewards_CollectorDisabled.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/Rewards_CollectorDisabled.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Figure/figure.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Figure/figure.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ConstructionLight_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ConstructionLight_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/DryWallPainted_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/DryWallPainted_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/DryWall_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/DryWall_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Hammer_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Hammer_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/HardHat_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/HardHat_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Jigsaw_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Jigsaw_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/LightBulb_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/LightBulb_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Liquid_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Liquid_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Metal_Blue_Simple_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Metal_Blue_Simple_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Metal_Simple_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Metal_Simple_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/OBS_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/OBS_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Paint1G_WAnim_Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Paint1G_WAnim_Material.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/PaintBrush_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/PaintBrush_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/PaintLabel_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/PaintLabel_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Black_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Black_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Gray_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Gray_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Ridges_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Ridges_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Rough_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Rough_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Transparent.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Transparent.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_White_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_White_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Yellow_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Plastic_Yellow_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Strap_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/ExampleAssets/Materials/Strap_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/Ground_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/Ground_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/Stud_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Demo Scene/Misc/Stud_Mat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Appear.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Appear.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Burnt.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Burnt.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Cloudy.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Cloudy.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Color Tint.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Color Tint.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Cosmic.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Cosmic.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve 2.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve 2.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve 3.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve 3.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Dissolve.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Electricity.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Electricity.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Force Field.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Force Field.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ghost/Ghost 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ghost/Ghost 1.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ghost/Ghost.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ghost/Ghost.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Glow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Glow.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Heat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Heat.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Hologram.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Hologram.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ice.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Ice.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Inverted.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Inverted.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Inverted_Transparent.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Inverted_Transparent.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Matrix.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Matrix.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Outline.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Outline.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Shake.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Shake.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Simple Water.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Simple Water.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Snow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Snow.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Stone.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Stone.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Transparent.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Transparent.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 1.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 2.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 2.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 3.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 3.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 4.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 4.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 5.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl 5.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Lifty's Shader Pack/Materials/Twirl/Twirl.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Route/CollectorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Route/CollectorController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Route/Materials/e1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Route/Materials/e1.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TimelineSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TimelineSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,19 +105,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Haoran1006__00&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.58f2\Editor\Unity.exe" />
@@ -123,6 +187,7 @@
       <workItem from="1759700483591" duration="1058000" />
       <workItem from="1759728863439" duration="1803000" />
       <workItem from="1759731037284" duration="5513000" />
+      <workItem from="1759759573661" duration="2846000" />
     </task>
     <servers />
   </component>
