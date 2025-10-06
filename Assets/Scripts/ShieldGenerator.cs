@@ -115,6 +115,10 @@ public class ShieldGenerator : MonoBehaviour
         _damageZoneCollider.isTrigger = true;
         _damageZoneCollider.radius = shieldRadius * 0.9f; // Slightly smaller than visual shield
         
+        // Add trigger handler for damage zone
+        ShieldDamageZone damageZoneComponent = damageZone.AddComponent<ShieldDamageZone>();
+        damageZoneComponent.Initialize(this);
+        
         // Create bullet barrier collider (larger, for bullet blocking)
         GameObject bulletBarrier = new GameObject("ShieldBulletBarrier");
         bulletBarrier.transform.SetParent(transform);
@@ -124,6 +128,10 @@ public class ShieldGenerator : MonoBehaviour
         _bulletBarrierCollider = bulletBarrier.AddComponent<SphereCollider>();
         _bulletBarrierCollider.isTrigger = true;
         _bulletBarrierCollider.radius = shieldRadius; // Same size as visual shield
+        
+        // Add shield barrier component for bullet blocking
+        ShieldBarrier barrierComponent = bulletBarrier.AddComponent<ShieldBarrier>();
+        barrierComponent.Initialize(this);
         
         if (enableDebugLogs)
             Debug.Log($"[ShieldGenerator] Created colliders - Damage: {_damageZoneCollider.radius}, Barrier: {_bulletBarrierCollider.radius}");
@@ -255,12 +263,13 @@ public class ShieldGenerator : MonoBehaviour
     
     #region Player Damage System (Similar to TrackDamage.cs)
     
-    void OnTriggerEnter(Collider other)
+    // Called by ShieldTriggerHandler when player enters damage zone
+    public void OnPlayerEnterDamageZone(Collider other)
     {
-        // Handle player entering damage zone
         if (IsPlayerObject(other.gameObject) && _shieldActive && !_isDead)
         {
             _playerInDamageZone = true;
+            Debug.Log("Player entered damage zone!");
             
             // Get player damage manager
             _playerDamageManager = other.GetComponent<PlayerDamageManager>();
@@ -274,17 +283,11 @@ public class ShieldGenerator : MonoBehaviour
             if (enableDebugLogs)
                 Debug.Log("[ShieldGenerator] Player entered damage zone!");
         }
-        
-        // Handle bullet collision (bullet barrier system)
-        if (IsBulletObject(other.gameObject) && _shieldActive && !_isDead)
-        {
-            HandleBulletCollision(other);
-        }
     }
     
-    void OnTriggerExit(Collider other)
+    // Called by ShieldTriggerHandler when player exits damage zone
+    public void OnPlayerExitDamageZone(Collider other)
     {
-        // Handle player leaving damage zone
         if (IsPlayerObject(other.gameObject))
         {
             _playerInDamageZone = false;
@@ -299,6 +302,7 @@ public class ShieldGenerator : MonoBehaviour
                 Debug.Log("[ShieldGenerator] Player left damage zone!");
         }
     }
+    
     
     private IEnumerator DamagePlayerContinuously()
     {
@@ -338,43 +342,19 @@ public class ShieldGenerator : MonoBehaviour
     
     #region Bullet Barrier System
     
-    private void HandleBulletCollision(Collider bulletCollider)
-    {
-        if (!destroyIncomingBullets) return;
-        
-        GameObject bullet = bulletCollider.gameObject;
-        
-        // Check if bullet is moving towards or away from shield center
-        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-        if (bulletRb && allowOutgoingBullets)
-        {
-            Vector3 bulletVelocity = bulletRb.linearVelocity;
-            Vector3 toShieldCenter = transform.position - bullet.transform.position;
-            
-            // If bullet is moving away from shield center, let it pass (outgoing)
-            float dotProduct = Vector3.Dot(bulletVelocity.normalized, toShieldCenter.normalized);
-            if (dotProduct < 0) // Moving away from center
-            {
-                if (enableDebugLogs)
-                    Debug.Log("[ShieldGenerator] Allowing outgoing bullet to pass");
-                return;
-            }
-        }
-        
-        // Destroy incoming bullet
-        DestroyBullet(bullet, bulletCollider.transform.position);
-    }
-    
-    private void DestroyBullet(GameObject bullet, Vector3 hitPoint)
+    /// <summary>
+    /// Called by ShieldBarrier when a bullet is blocked
+    /// </summary>
+    public void OnBulletBlocked(Vector3 hitPoint)
     {
         if (enableDebugLogs)
-            Debug.Log("[ShieldGenerator] Destroying incoming bullet");
+            Debug.Log("[ShieldGenerator] Bullet blocked by shield!");
         
         // Play shield hit sound
         if (audioSource && shieldHitSound)
             audioSource.PlayOneShot(shieldHitSound);
         
-        // Spawn bullet destroy effect
+        // Spawn bullet destroy effect at hit point
         if (bulletDestroyEffect)
         {
             GameObject fx = Instantiate(bulletDestroyEffect, hitPoint, Quaternion.identity);
@@ -386,23 +366,8 @@ public class ShieldGenerator : MonoBehaviour
             else
                 Destroy(fx, 2f);
         }
-        
-        // Destroy the bullet
-        Destroy(bullet);
     }
     
-    private bool IsBulletObject(GameObject obj)
-    {
-        // Check layer mask
-        if (((1 << obj.layer) & bulletLayerMask) == 0)
-            return false;
-        
-        // Check tag
-        if (!string.IsNullOrEmpty(bulletTag) && !obj.CompareTag(bulletTag))
-            return false;
-        
-        return true;
-    }
     
     #endregion
     
@@ -428,6 +393,33 @@ public class ShieldGenerator : MonoBehaviour
     public float CurrentHealth => _currentHP;
     public float MaxHealth => maxHP;
     public float ShieldRadius => shieldRadius;
+    public bool AllowOutgoingBullets => allowOutgoingBullets;
+    
+    /// <summary>
+    /// Check if a position is inside the shield
+    /// </summary>
+    public bool IsPositionInsideShield(Vector3 position)
+    {
+        if (!_shieldActive || _isDead) return false;
+        
+        float distance = Vector3.Distance(transform.position, position);
+        return distance < shieldRadius * 0.9f; // Use damage zone radius
+    }
+    
+    /// <summary>
+    /// Mark a bullet to be ignored by the shield barrier (for bullets fired from inside)
+    /// </summary>
+    public void MarkBulletAsOutgoing(GameObject bullet)
+    {
+        if (_bulletBarrierCollider != null)
+        {
+            ShieldBarrier barrier = _bulletBarrierCollider.GetComponent<ShieldBarrier>();
+            if (barrier != null)
+            {
+                barrier.IgnoreBullet(bullet);
+            }
+        }
+    }
     
     public void SetShieldRadius(float newRadius)
     {

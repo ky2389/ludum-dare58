@@ -45,7 +45,37 @@ public class Bullet : MonoBehaviour
     // --- Physics: trigger colliders (in case your target uses triggers) ---
     void OnTriggerEnter(Collider other)
     {
+        // Check for shield barrier first
+        ShieldBarrier shieldBarrier = other.GetComponent<ShieldBarrier>();
+        if (shieldBarrier != null)
+        {
+            // Let the shield barrier decide if this bullet should be blocked
+            if (shieldBarrier.ShouldBlockBullet(gameObject))
+            {
+                // Bullet is blocked by shield - destroy it
+                Debug.Log("[Bullet] Blocked by shield barrier - destroying");
+                CleanupAndDestroy();
+                return;
+            }
+            else
+            {
+                // Bullet passes through shield - don't destroy it, don't apply damage
+                Debug.Log("[Bullet] Passing through shield barrier - continuing");
+                return;
+            }
+        }
+        
+        // Check for shield damage zone (we don't want bullets to be destroyed by damage zones)
+        ShieldDamageZone damageZone = other.GetComponent<ShieldDamageZone>();
+        if (damageZone != null)
+        {
+            // Ignore damage zones - bullets should pass through them
+            Debug.Log("[Bullet] Passing through shield damage zone - ignoring");
+            return;
+        }
+        
         // Use bullet position as fallback impact point for trigger hits
+        Debug.Log($"[Bullet] Hit trigger: {other.name} - applying damage and destroying");
         ApplyDamageIfAny(other, transform.position, -transform.forward);
         CleanupAndDestroy();
     }
