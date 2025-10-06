@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine.Events;
 using UnityEngine;
 
 
@@ -41,8 +42,14 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     
     
     //inventory display
-    private int[] _chargeNumbers = {10, 0}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
-    public bool _EMPIsUnlocked = false;
+    private int[] _chargeNumbers = {10, 4}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
+    public int RegularChargeCount => _chargeNumbers[(int)ChargeTypes.Regular];
+    public int EMPChargeCount => _chargeNumbers[(int)ChargeTypes.EMP];
+    public bool HasAnyAmmo => (RegularChargeCount > 0) || (EMPChargeCount > 0);
+
+    [Header("Events")]
+    public UnityEvent OnInventoryChanged = new UnityEvent();
+    public bool _EMPIsUnlocked = true;
 
     [Header("TMP Displays")]
     //[SerializeField] private TextMeshProUGUI currentChargeTypeText;
@@ -240,6 +247,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                     
                     _placePointsWithAPlacedCharge.Add(_nearestPlacePoint);
                     _chargeNumbers[(int)_currentlyEquippedChargeType] -= 1;
+                    OnInventoryChanged.Invoke();
                     
                     // Material mat = _nearestPlacePoint.gameObject.GetComponent<MeshRenderer>().material;
                     // Color c = mat.color;
@@ -313,6 +321,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     {
         _EMPIsUnlocked = true;
     }
+
 
     #endregion
 }
