@@ -18,7 +18,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     //     Regular = 0,
     //     EMP = 1
     // }
-    
+
     //charge placement
     //note: assumes placed on avatar, so transform is avatar's transform
     [Header("Input Action Names")]
@@ -33,16 +33,16 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     [SerializeField] private float chargeDamageSelfMaxRadius = 7f;
     [Header("Prefabs for Explosive Charges")]
     [SerializeField] private GameObject[] chargeObjectPrefabs; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the prefab for regular charges
-    
+
     private PlayerDamageManager _playerDamageManager;
     private GameObject _nearestPlacePoint;
     private ChargeTypes _currentlyEquippedChargeType = ChargeTypes.Regular;
-    private List<GameObject> _placePointsWithAPlacedCharge=new List<GameObject>();
+    private List<GameObject> _placePointsWithAPlacedCharge = new List<GameObject>();
     private float _detonateButtonHoldTime = 0f;
-    
-    
+
+
     //inventory display
-    private int[] _chargeNumbers = {10, 4}; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
+    private int[] _chargeNumbers = { 15, 6 }; //number at index refers to number of charges of each type in inventory, defined in the enum, so the 0th element is the number of regular charges
     public int RegularChargeCount => _chargeNumbers[(int)ChargeTypes.Regular];
     public int EMPChargeCount => _chargeNumbers[(int)ChargeTypes.EMP];
     public bool HasAnyAmmo => (RegularChargeCount > 0) || (EMPChargeCount > 0);
@@ -67,8 +67,8 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
         {
             Debug.LogError("Incorrect number of charge display objects");
         }
-        
-        _playerDamageManager=GetComponentInParent<PlayerDamageManager>();
+
+        _playerDamageManager = GetComponentInParent<PlayerDamageManager>();
         if (!_playerDamageManager)
         {
             Debug.LogError("No player damage manager found");
@@ -101,7 +101,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
             currentlyEquippedChargesIcons[0].SetActive(false);
             currentlyEquippedChargesIcons[1].SetActive(true);
         }
-        
+
         if (_EMPIsUnlocked)
         {
             EMPDisplay.SetActive(true);
@@ -121,29 +121,29 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
 
         if (detonateChargePrompt)
             detonateChargePrompt.enabled = _placePointsWithAPlacedCharge.Count > 0;
-        
+
         if (regularChargeNumberText != null)
             regularChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.Regular].ToString();
         if (EMPChargeNumberText != null)
             EMPChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.EMP].ToString();
     }
-    
+
     //switch charge type
     private void SwitchChargeType()
     {
         if (Input.GetButtonDown(switchChargeTypeBehavior))
         {
             int count = System.Enum.GetValues(typeof(ChargeTypes)).Length;
-            int next = ((int)_currentlyEquippedChargeType+1) % count;
+            int next = ((int)_currentlyEquippedChargeType + 1) % count;
             _currentlyEquippedChargeType = (ChargeTypes)next;
         }
 
         if (!_EMPIsUnlocked && _currentlyEquippedChargeType == ChargeTypes.EMP)
         {
-            _currentlyEquippedChargeType=ChargeTypes.Regular;
+            _currentlyEquippedChargeType = ChargeTypes.Regular;
         }
-        
-        
+
+
         //change display of semi-transparent charge on place point
         if (_nearestPlacePoint)
         {
@@ -159,12 +159,12 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
             }
         }
     }
-    
+
     #endregion
 
 
     #region Highlight nearest place point in range
-    
+
     //now actually displays a semi-transparent model of the charge to be placed
     private void HighlightNearestPlacePointInRange()
     {
@@ -201,14 +201,14 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                 DisableSemiTransparentChargeDisplayOnPlacePoint();
                 return;
             }
-            
+
             //else, there is a place point in range
             if (_nearestPlacePoint && nearest != _nearestPlacePoint)
             {
                 DisableSemiTransparentChargeDisplayOnPlacePoint();
             }
-            
-            _nearestPlacePoint= nearest.gameObject;
+
+            _nearestPlacePoint = nearest.gameObject;
             _nearestPlacePoint.GetComponent<ExplosivePlacePoint>()
                 .DisplaySemiTransparentChargeBeforePlacement(chargeObjectPrefabs[(int)_currentlyEquippedChargeType]);
         }
@@ -227,12 +227,12 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
             _nearestPlacePoint = null;
         }
     }
-    
+
     #endregion
 
 
     #region Charge placement and detonation
-    
+
     private void PlaceCharge()
     {
         if (_nearestPlacePoint)
@@ -241,14 +241,14 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
             {
                 if (_chargeNumbers[(int)_currentlyEquippedChargeType] > 0)
                 {
-                    
+
                     _nearestPlacePoint.GetComponent<ExplosivePlacePoint>()
                         .PlaceCharge(_currentlyEquippedChargeType, chargeObjectPrefabs[(int)_currentlyEquippedChargeType]);
-                    
+
                     _placePointsWithAPlacedCharge.Add(_nearestPlacePoint);
                     _chargeNumbers[(int)_currentlyEquippedChargeType] -= 1;
                     OnInventoryChanged.Invoke();
-                    
+
                     // Material mat = _nearestPlacePoint.gameObject.GetComponent<MeshRenderer>().material;
                     // Color c = mat.color;
                     // c.a = 0;
@@ -261,7 +261,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                     Debug.Log("Insufficient charge");
                     //TODO: add visual hint
                 }
-                
+
             }
         }
     }
@@ -281,7 +281,7 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                     foreach (GameObject placePointObject in _placePointsWithAPlacedCharge)
                     {
                         placePointObject.GetComponent<ExplosivePlacePoint>().DetonateCharge();
-                        
+
                         //see if player is too close to the charge to be damaged
                         if (Vector3.Distance(transform.position, placePointObject.transform.position) <=
                             chargeDamageSelfMaxRadius)
@@ -289,9 +289,9 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
                             _playerDamageManager.TakeDamageNoKnockback(5f, "Explosive Placed by Self");
                         }
                     }
-                    
+
                     _placePointsWithAPlacedCharge.Clear();
-                    
+
                     //shake camera
                     if (GetComponent<CameraShake0>())
                     {
@@ -310,11 +310,11 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
             }
         }
     }
-    
+
     #endregion
 
-    
-    
+
+
     #region externally called functions
 
     public void UnlockEMP()

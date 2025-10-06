@@ -14,7 +14,12 @@ public class AimBehaviourBasic : GenericBehaviour
 
 	// Cached camera used for crosshair ray
 	private Camera cam;
-
+	[Header("Audio")]
+	public AudioSource sfxSource;          // 可选：指定一个AudioSource来播枪声（推荐挂在武器或玩家上）
+	public AudioClip fireSfx;              // 枪声音频
+	[Range(0f, 1f)] public float fireSfxVolume = 1f;
+	[Tooltip("给每发子弹加一点音高随机，避免完全重复的听感")]
+	[Range(0f, 0.3f)] public float firePitchJitter = 0.06f;
 	// =========================
 	// Aim/camera settings
 	// =========================
@@ -223,7 +228,7 @@ public class AimBehaviourBasic : GenericBehaviour
 		// Trigger "Fire" so recoil plays on both Arms/Chest layers
 		anim.ResetTrigger(fireTriggerHash);
 		anim.SetTrigger(fireTriggerHash);
-
+		PlayFireSfx();
 		// --- Compute aim point from crosshair (camera center) ---
 		Vector3 aimPoint;
 		bool hasAimPoint = GetAimPointFromCrosshair(out aimPoint);
@@ -274,6 +279,27 @@ public class AimBehaviourBasic : GenericBehaviour
 		// Wait until BOTH ArmsOverride and ChestOverride finish their firing states
 		StartCoroutine(WaitForFireEnd());
 	}
+	private void PlayFireSfx()
+	{
+		if (!fireSfx) return;
+
+		if (sfxSource)
+		{
+			// 轻微随机音高，别让每次声效一模一样
+			float basePitch = 1f + Random.Range(-firePitchJitter, firePitchJitter);
+			float oldPitch = sfxSource.pitch;
+			sfxSource.pitch = basePitch;
+			sfxSource.PlayOneShot(fireSfx, fireSfxVolume);
+			sfxSource.pitch = oldPitch;
+		}
+		else
+		{
+			// 没给AudioSource就临时在枪口位置播放一次（3D音效）
+			Vector3 pos = muzzle ? muzzle.position : transform.position;
+			AudioSource.PlayClipAtPoint(fireSfx, pos, fireSfxVolume);
+		}
+	}
+
 
 	// Wait until BOTH layers have finished their fire states
 	private IEnumerator WaitForFireEnd()
