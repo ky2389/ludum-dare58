@@ -6,15 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="7ad4c1a3-a316-4567-9b4c-bde96b85fba8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ludum-dare58/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/PUBLIC/Scenes/Lv1_1006_v0.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/ScanFXMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Materials/ScanFXMaterial.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDestroyableComponent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +24,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/CollectorDisableStateControl_TypeAlpha.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/!workspace/wanghaoran19199/Scripts/Rewards_CollectorDisabled.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -39,7 +39,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Haoran1006__00&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -115,12 +115,15 @@
       <workItem from="1759700341686" duration="8000" />
       <workItem from="1759700378683" duration="46000" />
       <workItem from="1759700483591" duration="1058000" />
+      <workItem from="1759728863439" duration="1803000" />
+      <workItem from="1759731037284" duration="5513000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
