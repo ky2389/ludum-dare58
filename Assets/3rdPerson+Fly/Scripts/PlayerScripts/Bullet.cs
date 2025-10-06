@@ -3,19 +3,20 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [Header("Lifetime / Damage")]
-    public float lifeTime = 5f;           // Auto-destroy after this time
+    public float lifeTime = 5f;
     public float damage = 10f;
 
     [Header("Impact VFX (optional)")]
-    public GameObject impactEffect;       // Optional impact effect prefab
+    public GameObject impactEffect;
     public bool autodestroyByParticleDuration = true;
-    public float impactEffectLifetime = 2f; // Fallback seconds if no ParticleSystem
+    public float impactEffectLifetime = 2f;
 
     [Header("Visuals")]
-    public TrailRenderer trail;           // Assign your TrailRenderer component
-    public Light glowLight;               // Optional small point light
+    public TrailRenderer trail;
+    public Light glowLight;
 
     private Rigidbody rb;
+    private Vector3 lastVelocity; // 缓存上一个物理步的速度
 
     void Awake()
     {
@@ -24,13 +25,17 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        // Safety: destroy bullet body after lifeTime. The trail may keep living shortly after detach.
         Destroy(gameObject, lifeTime);
+    }
+
+    void FixedUpdate()
+    {
+        if (rb) lastVelocity = rb.linearVelocity;
     }
 
     void Update()
     {
-        // Align bullet forward with its velocity so the trail follows the motion nicely
+        // 用速度对齐子弹朝向，便于拖尾跟随
         if (rb && rb.linearVelocity.sqrMagnitude > 0.0001f)
             transform.forward = rb.linearVelocity.normalized;
     }
@@ -38,70 +43,67 @@ public class Bullet : MonoBehaviour
     // --- Physics: solid colliders ---
     void OnCollisionEnter(Collision col)
     {
-        ApplyDamageIfAny(col.collider, col.GetContact(0).point, col.GetContact(0).normal);
+        var contact = col.GetContact(0);
+        Vector3 hitPoint = contact.point;
+        Vector3 hitNormal = contact.normal;
+
+        // 冲击方向：沿弹道（命中瞬间的飞行方向）
+        Vector3 impactDir = (lastVelocity.sqrMagnitude > 0.0001f ? lastVelocity : transform.forward).normalized;
+
+        ApplyDamageIfAny(col.collider, hitPoint, hitNormal, impactDir);
         CleanupAndDestroy();
     }
 
-    // --- Physics: trigger colliders (in case your target uses triggers) ---
+    // --- Physics: trigger colliders ---
     void OnTriggerEnter(Collider other)
     {
-        // Check for shield barrier first
+        // 盾牌屏蔽判定
         ShieldBarrier shieldBarrier = other.GetComponent<ShieldBarrier>();
         if (shieldBarrier != null)
         {
-            // Let the shield barrier decide if this bullet should be blocked
             if (shieldBarrier.ShouldBlockBullet(gameObject))
             {
-                // Bullet is blocked by shield - destroy it
-                // Debug.Log("[Bullet] Blocked by shield barrier - destroying");
+                ApplyDamageIfAny(other, transform.position, -transform.forward, -transform.forward);
                 CleanupAndDestroy();
                 return;
             }
             else
             {
-                // Bullet passes through shield barrier - continue to check for other targets
-                // Debug.Log("[Bullet] Passing through shield barrier - continuing");
-                // Don't return here - let the bullet continue to hit other targets
+                // 放行——不要对屏蔽体本身结算伤害
+                return;
             }
         }
-        
-        // Check for shield damage zone (we don't want bullets to be destroyed by damage zones)
+
+        // 伤害区忽略
         ShieldDamageZone damageZone = other.GetComponent<ShieldDamageZone>();
         if (damageZone != null)
         {
-            // Ignore damage zones - bullets should pass through them
-            // Debug.Log("[Bullet] Passing through shield damage zone - ignoring");
             return;
         }
-        
-        // If we got here and it's a shield barrier that we passed through, don't apply damage to the barrier itself
-        if (shieldBarrier != null)
-        {
-            // We already handled the shield barrier above and it let us pass through
-            // Don't apply damage to the shield barrier itself
-            return;
-        }
-        
-        // Use bullet position as fallback impact point for trigger hits
-        // Debug.Log($"[Bullet] Hit trigger: {other.name} - applying damage and destroying");
-        ApplyDamageIfAny(other, transform.position, -transform.forward);
+
+        // 触发体没有接触面法线，使用子弹反向近似为“命中法线”，但朝向仍沿弹道
+        Vector3 hitPoint = transform.position;
+        Vector3 hitNormal = -transform.forward;
+        Vector3 impactDir = (lastVelocity.sqrMagnitude > 0.0001f ? lastVelocity : transform.forward).normalized;
+
+        ApplyDamageIfAny(other, hitPoint, hitNormal, impactDir);
         CleanupAndDestroy();
     }
 
-    // Try to apply damage to a DroneHealth (or any Health-like component you add later)
-    private void ApplyDamageIfAny(Collider hitCol, Vector3 hitPoint, Vector3 hitNormal)
+    // 增加 impactDir 参数：用它决定特效朝向
+    private void ApplyDamageIfAny(Collider hitCol, Vector3 hitPoint, Vector3 hitNormal, Vector3 impactDir)
     {
-        // Look up a health component on the hit object or its parents
         var health = hitCol.GetComponentInParent<DroneHealth>();
         if (health != null)
         {
             health.TakeDamage(damage);
         }
 
-        // Optional impact effect
         if (impactEffect)
         {
-            var fx = Instantiate(impactEffect, hitPoint, Quaternion.LookRotation(hitNormal));
+            var rot = Quaternion.LookRotation(impactDir, hitNormal);
+
+            var fx = Instantiate(impactEffect, hitPoint, rot);
             if (autodestroyByParticleDuration)
             {
                 var ps = fx.GetComponent<ParticleSystem>();
@@ -120,28 +122,22 @@ public class Bullet : MonoBehaviour
     // Detach visuals and destroy bullet body
     private void CleanupAndDestroy()
     {
-        // Detach the trail so it can fade out instead of being cut off instantly
         if (trail)
         {
             trail.transform.parent = null;
-
 #if UNITY_2019_1_OR_NEWER
-            // If your Unity supports it, let trail auto-destroy after it has fully faded
             trail.autodestruct = true;
 #else
-            // Fallback: destroy the trail after its time (plus a small buffer)
             Destroy(trail.gameObject, trail.time * 1.25f);
 #endif
         }
 
-        // Optionally detach and fade the glow light
         if (glowLight)
         {
             glowLight.transform.parent = null;
             Destroy(glowLight.gameObject, 0.2f);
         }
 
-        // Destroy the bullet body immediately on impact
         Destroy(gameObject);
     }
 }
