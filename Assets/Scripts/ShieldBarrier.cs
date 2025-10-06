@@ -32,7 +32,7 @@ public class ShieldBarrier : MonoBehaviour
         // Check if this bullet should be ignored (fired from inside)
         if (_bulletsToIgnore.Contains(bullet))
         {
-            Debug.Log("[ShieldBarrier] Ignoring bullet fired from inside shield");
+            // Debug.Log("[ShieldBarrier] Ignoring bullet fired from inside shield");
             _bulletsToIgnore.Remove(bullet); // Clean up
             return false;
         }
@@ -51,24 +51,24 @@ public class ShieldBarrier : MonoBehaviour
             // If bullet is moving away from shield center, let it pass (outgoing)
             float dotProduct = Vector3.Dot(bulletVelocity.normalized, toShieldCenter.normalized);
             
-            Debug.Log($"[ShieldBarrier] Bullet at distance {distanceFromCenter:F2} from center (radius: {shieldRadius:F2})");
-            Debug.Log($"[ShieldBarrier] Bullet velocity: {bulletVelocity}, ToCenter: {toShieldCenter}, DotProduct: {dotProduct:F2}");
+            // Debug.Log($"[ShieldBarrier] Bullet at distance {distanceFromCenter:F2} from center (radius: {shieldRadius:F2})");
+            // Debug.Log($"[ShieldBarrier] Bullet velocity: {bulletVelocity}, ToCenter: {toShieldCenter}, DotProduct: {dotProduct:F2}");
             
             // If bullet is close to center (fired from inside) and moving away, let it pass
             if (distanceFromCenter < shieldRadius * 0.8f && dotProduct < 0.3f)
             {
-                Debug.Log("[ShieldBarrier] Allowing bullet fired from inside to pass through shield");
+                // Debug.Log("[ShieldBarrier] Allowing bullet fired from inside to pass through shield");
                 return false;
             }
             
             if (dotProduct < 0) // Moving away from center
             {
-                Debug.Log("[ShieldBarrier] Allowing outgoing bullet to pass through shield");
+                // Debug.Log("[ShieldBarrier] Allowing outgoing bullet to pass through shield");
                 return false; // Don't block outgoing bullets
             }
             else
             {
-                Debug.Log("[ShieldBarrier] Blocking incoming bullet");
+                // Debug.Log("[ShieldBarrier] Blocking incoming bullet");
             }
         }
         
@@ -100,36 +100,9 @@ public class ShieldBarrier : MonoBehaviour
     {
         if (_shieldGenerator)
         {
-            // Create bullet impact effects using the bullet's own impact effect
             Vector3 hitPoint = bullet.transform.position;
-            Vector3 hitNormal = (_shieldGenerator.transform.position - hitPoint).normalized;
             
-            // Spawn the bullet's own impact effect if it has one
-            if (bulletComponent.impactEffect)
-            {
-                GameObject fx = Instantiate(bulletComponent.impactEffect, hitPoint, Quaternion.LookRotation(hitNormal));
-                if (bulletComponent.autodestroyByParticleDuration)
-                {
-                    var ps = fx.GetComponent<ParticleSystem>();
-                    if (ps != null)
-                        Destroy(fx, ps.main.duration + ps.main.startLifetime.constantMax);
-                    else
-                        Destroy(fx, bulletComponent.impactEffectLifetime);
-                }
-                else
-                {
-                    Destroy(fx, bulletComponent.impactEffectLifetime);
-                }
-            }
-            
-            // Detach and fade the bullet's glow light (same as bullet's CleanupAndDestroy)
-            if (bulletComponent.glowLight)
-            {
-                bulletComponent.glowLight.transform.parent = null;
-                Destroy(bulletComponent.glowLight.gameObject, 0.2f);
-            }
-            
-            // Notify shield generator for additional effects
+            // Notify shield generator for shield-specific effects (sound, etc.)
             _shieldGenerator.OnBulletBlocked(hitPoint);
         }
     }

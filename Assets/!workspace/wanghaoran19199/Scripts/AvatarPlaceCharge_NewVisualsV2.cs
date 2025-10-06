@@ -65,25 +65,37 @@ public class AvatarPlaceCharge_NewVisualsV2 : MonoBehaviour
     //controls UI display & charge type switching
     private void ChargeDisplayControl()
     {
-        currentChargeTypeText.text = _currentlyEquippedChargeType.ToString();
+        // Null check to prevent NullReferenceException
+        if (currentChargeTypeText != null)
+        {
+            currentChargeTypeText.text = _currentlyEquippedChargeType.ToString();
+        }
         
         if (_EMPIsUnlocked)
         {
-            EMPChargeNameText.enabled = true;
-            EMPChargeNumberText.enabled = true;
+            if (EMPChargeNameText != null)
+                EMPChargeNameText.enabled = true;
+            if (EMPChargeNumberText != null)
+                EMPChargeNumberText.enabled = true;
         }
         else
         {
-            EMPChargeNameText.enabled = false;
-            EMPChargeNumberText.enabled = false;
+            if (EMPChargeNameText != null)
+                EMPChargeNameText.enabled = false;
+            if (EMPChargeNumberText != null)
+                EMPChargeNumberText.enabled = false;
         }
 
-        placeChargePrompt.enabled = _nearestPlacePoint;
+        if (placeChargePrompt != null)
+            placeChargePrompt.enabled = _nearestPlacePoint;
 
-        detonateChargePrompt.enabled = _placePointsWithAPlacedCharge.Count > 0;
+        if (detonateChargePrompt != null)
+            detonateChargePrompt.enabled = _placePointsWithAPlacedCharge.Count > 0;
         
-        regularChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.Regular].ToString();
-        EMPChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.EMP].ToString();
+        if (regularChargeNumberText != null)
+            regularChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.Regular].ToString();
+        if (EMPChargeNumberText != null)
+            EMPChargeNumberText.text = _chargeNumbers[(int)ChargeTypes.EMP].ToString();
     }
     
     //switch charge type

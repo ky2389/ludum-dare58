@@ -269,7 +269,7 @@ public class ShieldGenerator : MonoBehaviour
         if (IsPlayerObject(other.gameObject) && _shieldActive && !_isDead)
         {
             _playerInDamageZone = true;
-            Debug.Log("Player entered damage zone!");
+            // Debug.Log("Player entered damage zone!");
             
             // Get player damage manager
             _playerDamageManager = other.GetComponent<PlayerDamageManager>();
@@ -280,8 +280,8 @@ public class ShieldGenerator : MonoBehaviour
             if (_damageCoroutine == null)
                 _damageCoroutine = StartCoroutine(DamagePlayerContinuously());
             
-            if (enableDebugLogs)
-                Debug.Log("[ShieldGenerator] Player entered damage zone!");
+            // if (enableDebugLogs)
+            //     Debug.Log("[ShieldGenerator] Player entered damage zone!");
         }
     }
     
@@ -298,8 +298,8 @@ public class ShieldGenerator : MonoBehaviour
                 _damageCoroutine = null;
             }
             
-            if (enableDebugLogs)
-                Debug.Log("[ShieldGenerator] Player left damage zone!");
+            // if (enableDebugLogs)
+            //     Debug.Log("[ShieldGenerator] Player left damage zone!");
         }
     }
     
@@ -347,8 +347,8 @@ public class ShieldGenerator : MonoBehaviour
     /// </summary>
     public void OnBulletBlocked(Vector3 hitPoint)
     {
-        if (enableDebugLogs)
-            Debug.Log("[ShieldGenerator] Bullet blocked by shield!");
+        // if (enableDebugLogs)
+        //     Debug.Log("[ShieldGenerator] Bullet blocked by shield!");
         
         // Play shield hit sound
         if (audioSource && shieldHitSound)

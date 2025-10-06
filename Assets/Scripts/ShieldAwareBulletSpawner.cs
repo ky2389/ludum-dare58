@@ -26,7 +26,7 @@ public class ShieldAwareBulletSpawner : MonoBehaviour
                 // Check if the spawn position is inside this shield
                 if (shield.IsPositionInsideShield(spawnPosition))
                 {
-                    Debug.Log($"[ShieldAwareBulletSpawner] Bullet spawned inside shield, marking as outgoing");
+                    // Debug.Log($"[ShieldAwareBulletSpawner] Bullet spawned inside shield, marking as outgoing");
                     shield.MarkBulletAsOutgoing(bullet);
                     break; // Only need to mark once
                 }
