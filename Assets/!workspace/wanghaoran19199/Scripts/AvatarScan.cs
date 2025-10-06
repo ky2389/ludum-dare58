@@ -71,7 +71,10 @@ public class AvatarScan : MonoBehaviour
                 var placePointObject = hitGameobject.GetComponent<ExplosivePlacePoint>();
                 if (placePointObject) //object is place point
                 {
-                    hitGameobject.GetComponent<MeshRenderer>().enabled = true;
+                    if (placePointObject.CheckCanBeShownInScan())
+                    {
+                        hitGameobject.GetComponent<MeshRenderer>().enabled = true;  //enable mesh display
+                    }
                     newScannedPlacePoints.Add(hitGameobject);
                 }
                 else

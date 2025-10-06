@@ -35,6 +35,7 @@ public class CollectorDestroyableComponent : MonoBehaviour
             if (!_hasBeenDisabled)
             {
                 DestroyThisComponent();
+                Debug.Log("Component has been disabled");
             }
         }
     }
@@ -55,11 +56,16 @@ public class CollectorDestroyableComponent : MonoBehaviour
     
     private void DisplayAllDestroyedFX()
     {
-        foreach (Transform child in transform.GetComponentsInChildren<Transform>())
+        foreach (Transform child in transform)
         {
-            if (child.name.Contains("FX"))
+            //Debug.Log(child.name);
+            foreach (Transform child1 in child.transform)
             {
-                child.gameObject.GetComponent<ParticleSystem>().Play();
+                //Debug.Log(child1.name);
+                if (child1.name.Contains("FX"))
+                {
+                    child1.gameObject.GetComponent<ParticleSystem>().Play();
+                }
             }
         }
     }
@@ -91,6 +97,7 @@ public class CollectorDestroyableComponent : MonoBehaviour
     public void DealDamageToComponent(int powerOfCharge)
     {
         _remainingChargePowers -= powerOfCharge;
+        //Debug.Log(powerOfCharge);
     }
 
     public void SpawnTextHintForScan(GameObject textObjectPrefab, float yPos)
